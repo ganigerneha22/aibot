@@ -1,0 +1,10 @@
+<mvc:View controllerName="com.intakedashboard.controller.dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="Intake Management">
+    <Toolbar >
+     
+      <Button icon="sap-icon://da"  press=".onChatBotClick"  ></Button>
+    </Toolbar>
+    </Page>
+</mvc:View>

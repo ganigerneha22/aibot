@@ -1,0 +1,13 @@
+{
+    "templates": [
+      { "text": "Create Service Request" },
+      { "text": "Onboard New Supplier" },
+      { "text": "Material Creation" },
+      { "text": "More Options" }
+    ],
+    "responses":{
+        "I want to procure laptop battery": "Got it-you're looking for order laptop battery.Could you confirm the brand and model of the laptop",
+        "create": "Sure! Let's create a request.",
+        "default": "I'm still learning. Please try something else."
+    }
+  }
