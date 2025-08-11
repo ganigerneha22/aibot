@@ -7,7 +7,12 @@
     ],
     "responses":{
         "I want to procure laptop battery": "Got it-you're looking for order laptop battery.Could you confirm the brand and model of the laptop",
-        "create": "Sure! Let's create a request.",
+        "hii": "Sure! Let's create a request.",
+        "Dell Inspiron 15 7000":"It Looks like the laptop battery for Dell Inspiron 15 7000 isn't available in the catalog.Would you like me to create a Purchase Request for the same?",
+        "Yes,Create Request":"Got it!,I've started a new request,#REQ000096 for the laptop battery.",
+        "Yes,Proceed":"Great.Please provide the purchase details to complete the item entry:",
         "default": "I'm still learning. Please try something else."
     }
+
+    
   }

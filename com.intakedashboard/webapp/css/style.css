@@ -96,6 +96,31 @@
     padding-bottom: 0.5rem;
     width: 20rem;
   }
+.cardStyle {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.cardStyle2{
+   max-width: 80%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    border-radius: 8px;
+    background: white;
+    padding: 8px;
+}
+.detailLabel {
+    font-weight: bold;
+}
+
+.messageWrapper {
+    width: 100%;
+}
+
+.sapMFlexItem {
+    min-width: 0; /* prevents overflow in HBox */
+}
 
   #greetingSection {
     transition: opacity 0.5s ease;

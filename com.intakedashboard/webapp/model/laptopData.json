@@ -1,0 +1,11 @@
+{
+  "laptops": [
+    { "Brand": "Lenovo", "Model": "ThinkPad X1 Carbon Gen 11", "BatteryCapacity": "57Wh" },
+    { "Brand": "Lenovo", "Model": "IdeaPad Slim 5", "BatteryCapacity": "56Wh" },
+    { "Brand": "Dell", "Model": "Latitude 7440", "BatteryCapacity": "58Wh" },
+    { "Brand": "Acer", "Model": "TravelMate P6", "BatteryCapacity": "56Wh" },
+    { "Brand": "HP", "Model": "EliteBook 840 G9", "BatteryCapacity": "57Wh" },
+    { "Brand": "HP", "Model": "ProBook 450 G10", "BatteryCapacity": "55Wh" },
+    { "Brand": "Apple", "Model": "MacBook Pro M2", "BatteryCapacity": "58Wh" }
+  ]
+}
