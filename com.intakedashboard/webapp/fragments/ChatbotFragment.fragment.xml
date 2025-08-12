@@ -60,14 +60,14 @@ showHeader="false"
     <Text text="Select an option below or, type what you would like to do" class="sapUiTinyMarginBottom" />
      <FlexBox wrap="Wrap" class="greetingOptionsBox sapUiSmallMarginTop">
    
-   <VBox items="{botModel>/templates}">
+   <!-- <VBox items="{botModel>/templates}">
   <Button 
     text="{botModel>text}" 
     type="Transparent" 
     class="optionButton" 
     press=".onTemplateSelected"
   />
-</VBox>
+</VBox> -->
   </FlexBox>
   </VBox>
     <VBox id="chatContainer" width="100%" class="chatContainer"/>
