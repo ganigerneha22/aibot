@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog id="newRequestDialog" title="Create New Request" class="sapUiContentPadding" draggable="true" resizable="true">
+        <VBox>
+            <Label text="Request Title"/>
+            <Input placeholder="Enter title"/>
+            <Label text="Description"/>
+            <TextArea rows="3" placeholder="Enter description"/>
+            <Label text="Category"/>
+            <Select>
+                <items>
+                    <core:Item key="IT" text="IT"/>
+                    <core:Item key="HR" text="HR"/>
+                    <core:Item key="Finance" text="Finance"/>
+                </items>
+            </Select>
+        </VBox>
+        <beginButton>
+            <Button text="Submit" type="Emphasized" press="onSubmitRequest"/>
+        </beginButton>
+        <endButton>
+            <Button text="Cancel" press="onCloseDialog"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

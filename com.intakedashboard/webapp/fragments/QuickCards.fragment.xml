@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <HBox class="MainCardContainer" alignItems="Center" justifyContent="SpaceBetween" wrap="Wrap">
+        <!--  Employee Central Card with Purple Background  -->
+        <!--  <VBox id="employeeCentralCard" class="purpleCard clickableCard">
+      <Text text="Employee Central" class="purpleCardTitle" />
+      <core:Icon src="sap-icon://employee-lookup" class="purpleCardIcon" />
+    </VBox>  -->
+        <!--  Other cards remain unchanged  -->
+        <VBox id="glCard" class="purpleCard clickableCard">
+            <core:Icon src="sap-icon://add-document" size="2rem" class="purpleCardIcon"/>
+            <Text text="New General Ledger Account Creation" class="purpleCardTitle"/>
+        </VBox>
+        <VBox id="bpCard" class="purpleCard clickableCard">
+            <core:Icon src="sap-icon://supplier" size="2rem" class="purpleCardIcon"/>
+            <Text text="Business Partner Onboarding" class="purpleCardTitle"/>
+        </VBox>
+        <VBox id="ncCard" class="purpleCard clickableCard">
+            <core:Icon src="sap-icon://cart" size="2rem" class="purpleCardIcon"/>
+            <Text text="Non-Catalogue Item Requisition" class="purpleCardTitle"/>
+        </VBox>
+        <!--  Arrow  -->
+        <Button icon="sap-icon://slim-arrow-right" class="arrowButton" press="onCardsNext"/>
+    </HBox>
+</core:FragmentDefinition>

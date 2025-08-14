@@ -222,3 +222,328 @@
     font-size: 14px;
     align-self: flex-end;
 }
+
+
+.outerBubble {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.purpleBubble {
+    background-color: #e8e1f8; 
+    border-radius: 10px;
+    width: 320px;
+    padding: 0.2rem;
+    display: inline-block; 
+    right: 2px;
+}
+.whiteCard {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px 14px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e1d6f8;
+    min-width: 280px; 
+}
+
+.sapMBtn .sapMBtnNeutral .sapMBtnContent, .sapContrast span.sapMBtnInner.sapMBtnNeutral .sapMBtnContent, .sapMBtn .sapMBtnNeutral .sapMBtnIcon, .sapContrast span.sapMBtnInner.sapMBtnNeutral .sapMBtnIcon{
+  color:#333
+}
+
+/* Dashboard */
+/* Icon buttons in header */
+
+html, body{
+  background-color: var(--sapList_Background);
+}
+
+.blackIconButton .sapMBtnIcon {
+  color: #000000 !important;
+}
+.blackIconButton:hover .sapMBtnIcon {
+  color: #333333 !important;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 50%;
+}
+.blackIconButton:active .sapMBtnIcon,
+.blackIconButton:focus .sapMBtnIcon {
+  color: #000000 !important;
+  background-color: rgba(0,0,0,0.1);
+}
+
+/* Header bar */
+.customHeaderBar .sapMBarLeft {
+  flex: 1;
+  min-width: 0;
+  justify-content: flex-start;
+}
+.customHeaderBar .sapMBarPH {
+  padding: 0 0.5rem;
+}
+.customHeaderBar .headerTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0 0.5rem;
+}
+.customHeaderBar .sapMBarRight {
+  flex: 1;
+  min-width: 0;
+  justify-content: flex-end;
+}
+.customHeaderBar .headerAvatar {
+  margin-left: 0.5rem;
+}
+
+/* Image wrapper and overlay */
+.imageWrapper {
+  position: relative;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+.centerImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.overlayContainer {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  right: 40px;
+  text-align: center;
+  z-index: 1;
+}
+.customAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+}
+.overlayTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+}
+.overlaySubtitle {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+/* New Request button */
+/* Pill New Request Button Styling */
+.pillNewRequestButton .sapMBtnInner {
+  background-color: #007bff !important;
+  border-radius: 999px !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: white !important;
+  font-weight: 500;
+  padding: 0 1.2rem !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Icon styling */
+.pillNewRequestButton .sapMBtnIcon {
+  color: white !important;
+  font-size: 1rem !important; 
+  margin-right: 0.4rem !important;
+}
+
+/* Hover state */
+.pillNewRequestButton:hover .sapMBtnInner {
+  background-color: #006ae6 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Active (clicked) state */
+.pillNewRequestButton:active .sapMBtnInner,
+.pillNewRequestButton .sapMBtnInner:active {
+  background-color: #005fcc !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Focus state */
+.pillNewRequestButton:focus .sapMBtnInner,
+.pillNewRequestButton .sapMBtnInner:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+/* Cards */
+.MainCardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  margin-top: 20px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+.purpleCard {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 24px;
+  height: 200px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+.purpleCardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "72", "72full", Arial, sans-serif;
+  color: black !important;
+  line-height: 1.2;
+}
+.purpleCardIcon {
+  font-size: 2rem;
+  color: black !important;
+}
+.clickableCard:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+  transition: all 120ms ease-in-out;
+}
+.arrowButton {
+  background: #f2f7fb;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  color: #333 !important;
+}
+
+.dividerLine {
+    border-bottom: 1px solid #A8B3BD; /* light grey line similar to sap.m.Table's border */
+    width: 100%;
+}
+
+/* Worklist table */
+.wlTable {
+  margin-top: 1%;
+  border-radius: 4px;
+  padding: 1rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.workListStyle{
+  padding-left: 3rem;
+}
+
+/* Common styling */
+/* Common pill style */
+/* Common pill style */
+.statusCompleted.sapMObjStatus,
+.statusInProgress.sapMObjStatus,
+.statusDefault.sapMObjStatus {
+    border-radius: 16px !important;
+    padding: 2px 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    font-weight: bold !important;
+}
+
+/* Completed */
+.statusCompleted.sapMObjStatus {
+    background-color: #d1f3e0 !important;
+    border: 1px solid #107e3e !important;
+}
+.statusCompleted .sapMObjStatusTitle,
+.statusCompleted .sapMObjStatusIcon {
+    color: #107e3e !important;
+}
+
+/* In Progress */
+.statusInProgress.sapMObjStatus {
+    background-color: #fef3d9 !important;
+    border: 1px solid #e9730c !important;
+}
+.statusInProgress .sapMObjStatusTitle,
+.statusInProgress .sapMObjStatusIcon {
+    color: #e9730c !important;
+}
+
+/* Draft or Default */
+.statusDefault.sapMObjStatus {
+    background-color: #f4f4f4 !important;
+    border: 1px solid #6a6d70 !important;
+}
+.statusDefault .sapMObjStatusTitle,
+.statusDefault .sapMObjStatusIcon {
+    color: #6a6d70 !important;
+}
+
+
+
+.reqTextStyle {
+  font-family: var(--sapFontFamily);
+  font-weight: 400;
+  font-style: normal;
+  font-size: var(--sapFontSize);
+  line-height: 100%;
+}
+
+/* Table header and row styling */
+.sapMListTblHeaderCell {
+  background-color: transparent !important;
+}
+.sapMListTblHeader {
+  border-top: 1px solid #d3d3d3;
+  border-bottom: 1px solid #d3d3d3;
+}
+.sapMListTblRow {
+  border-bottom: 1px solid #d3d3d3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .MainCardContainer {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+@media (max-width: 1024px) {
+  .MainCardContainer {
+    padding-left: 40px;
+    padding-right: 40px;
+    row-gap: 16px;
+  }
+  .arrowButton {
+    align-self: center;
+    margin-left: 8px;
+  }
+}
+@media (max-width: 800px) {
+  .MainCardContainer {
+    justify-content: center;
+    gap: 16px;
+  }
+}
+@media (max-width: 600px) {
+  .imageWrapper {
+    padding: 0 24px;
+  }
+  .overlayContainer {
+    left: 24px;
+    right: 24px;
+  }
+}
+ 

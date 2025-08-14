@@ -8,4 +8,5 @@
     { "Brand": "HP", "Model": "ProBook 450 G10", "BatteryCapacity": "55Wh" },
     { "Brand": "Apple", "Model": "MacBook Pro M2", "BatteryCapacity": "58Wh" }
   ]
+ 
 }

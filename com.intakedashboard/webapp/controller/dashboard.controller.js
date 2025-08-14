@@ -2,13 +2,45 @@
 sap.ui.define([
   "sap/ui/core/mvc/Controller",
   "sap/ui/core/Fragment",
-  "sap/m/Text"
-], (Controller, Fragment, Text) => {
+  "sap/m/Text",
+  "sap/f/Card",
+  "sap/f/library",
+  "sap/ui/model/json/JSONModel",
+  "sap/m/MessageToast",
+  "sap/ui/model/Filter",
+  "sap/ui/model/FilterOperator"
+], (Controller, Fragment, Text, Card, fLibrary, JSONModel, MessageToast, Filter, FilterOperator) => {
   "use strict";
 
   return Controller.extend("com.intakedashboard.controller.dashboard", {
     onInit() {
-
+      var oModel = new JSONModel({
+        suggestions: [
+          { text: "New General Ledger Account Creation", key: "GL" },
+          { text: "Business Partner Onboarding", key: "BP" },
+          { text: "Non-Catalogue Item Requisition", key: "NC" }
+        ],
+        worklist: [{
+          requestId: "REQ00097",
+          title: "PR for Medical Gloves",
+          date: "21 July 2025",
+          status: "Draft"
+        },
+        {
+          requestId: "REQ00096",
+          title: "PR for Laptop Battery and Mouse",
+          date: "21 July 2025",
+          status: "In Progress"
+        },
+        {
+          requestId: "REQ00092",
+          title: "Request for 24” Monitors",
+          date: "08 May 2025",
+          status: "Completed"
+        }
+        ]
+      });
+      this.getView().setModel(oModel);
       const oBotModel = new sap.ui.model.json.JSONModel();
       oBotModel.loadData("model/botData.json");
       this.getView().setModel(oBotModel, "botModel");
@@ -17,6 +49,97 @@ sap.ui.define([
       oLaptopModel.loadData("model/laptopData.json");
       this.getView().setModel(oLaptopModel, "laptopModel");
     },
+    onAfterRendering: function () {
+      const mCardLinks = {
+        glCard: "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/d27faf66-3cbf-4eb4-a0a0-d5f38a9bbb5d.glcreateaccount.cominturecwglaccountcreation-0.0.1/index.html",
+        bpCard: "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/cwbponboarding.comincturecoecwbponboarding-0.0.1/index.html",
+        ncCard: "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/25768153-2c7f-47ea-9eee-7eb25d976698.non-catalogueItemRequisition.noncatalogueitemrequisition-0.0.1/index.html"
+      };
+
+      Object.entries(mCardLinks).forEach(([sId, sUrl]) => {
+        const oCard = this.byId(sId);
+        if (oCard && !oCard._clickAttached) {
+          oCard.addStyleClass("clickableCard");
+          oCard.attachBrowserEvent("click", () => window.open(sUrl, "_blank"));
+          oCard._clickAttached = true;
+        }
+      });
+
+      var oTable = this.byId("worklistTable"); // ID of your table
+      if (oTable) {
+        oTable.getItems().forEach(oItem => {
+          var oContext = oItem.getBindingContext();
+          if (oContext) {
+            var sStatus = oContext.getProperty("status");
+            var oObjectStatus = oItem.getCells()[3]; // index of your ObjectStatus cell
+
+            oObjectStatus.removeStyleClass("statusCompleted")
+              .removeStyleClass("statusInProgress")
+              .removeStyleClass("statusDefault");
+
+            if (sStatus === "Completed") {
+              oObjectStatus.addStyleClass("statusCompleted");
+            } else if (sStatus === "In Progress") {
+              oObjectStatus.addStyleClass("statusInProgress");
+            } else {
+              oObjectStatus.addStyleClass("statusDefault");
+            }
+          }
+        });
+      }
+    },
+
+    onNewRequestPress: function () {
+      // Show the ComboBox when button is clicked
+      this.byId("requestSearch").setVisible(true);
+    },
+
+    onRequestSelect: function (oEvent) {
+      var oSelectedItem = oEvent.getParameter("selectedItem");
+      var sSelectedText = "";
+
+      // Check if user selected from dropdown or typed manually
+      if (oSelectedItem) {
+        sSelectedText = oSelectedItem.getText();
+      } else {
+        // fallback: get typed value
+        sSelectedText = oEvent.getSource().getValue();
+      }
+
+      var mUrlMap = {
+        "New General Ledger Account Creation":
+          "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/d27faf66-3cbf-4eb4-a0a0-d5f38a9bbb5d.glcreateaccount.cominturecwglaccountcreation-0.0.1/index.html",
+        "Business Partner Onboarding":
+          "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/cwbponboarding.comincturecoecwbponboarding-0.0.1/index.html",
+        "Non-Catalogue Item Requisition":
+          "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/25768153-2c7f-47ea-9eee-7eb25d976698.non-catalogueItemRequisition.noncatalogueitemrequisition-0.0.1/index.html"
+      };
+
+      if (mUrlMap[sSelectedText]) {
+        window.open(mUrlMap[sSelectedText], "_blank");
+      } else {
+        sap.m.MessageToast.show("Please select a valid option from the list.");
+      }
+    },
+    onSearch: function (oEvent) {
+      var sQuery = oEvent.getParameter("query");
+
+      var mUrlMap = {
+        "New General Ledger Account Creation":
+          "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/d27faf66-3cbf-4eb4-a0a0-d5f38a9bbb5d.glcreateaccount.cominturecwglaccountcreation-0.0.1/index.html",
+        "Business Partner Onboarding":
+          "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/cwbponboarding.comincturecoecwbponboarding-0.0.1/index.html",
+        "Non-Catalogue Item Requisition":
+          "https://incbtpcoe.launchpad.cfapps.us10.hana.ondemand.com/25768153-2c7f-47ea-9eee-7eb25d976698.non-catalogueItemRequisition.noncatalogueitemrequisition-0.0.1/index.html"
+      };
+
+      if (mUrlMap[sQuery]) {
+        window.open(mUrlMap[sQuery], "_blank");
+      } else {
+        MessageToast.show("No matching request found.");
+      }
+    },
+
     onChatBotClick: function () {
       var oView = this.getView();
 
@@ -103,7 +226,7 @@ sap.ui.define([
         const oCard = new sap.m.VBox({
           width: "100%",
           items: []
-        }).addStyleClass("sapUiSmallMargin cardStyle");
+        }).addStyleClass("sapUiSmallMarginTop cardStyle");
 
         // Title
         oCard.addItem(new sap.m.Label({
@@ -189,7 +312,6 @@ sap.ui.define([
           items: []
         }).addStyleClass("sapUiSmallMargin cardStyle2");
 
-        // Create two-column detail layout
         const aDetailKeys = Object.keys(response.details);
         for (let i = 0; i < aDetailKeys.length; i += 2) {
           oCard.addItem(new sap.m.HBox({
@@ -297,34 +419,347 @@ sap.ui.define([
               text: "OK",
               type: "Emphasized",
               press: function () {
-                const sQuantity = aFields[0].control.getValue();
+                const sQuantity = parseFloat(aFields[0].control.getValue()) || 0;
                 const sUOM = aFields[1].control.getValue();
-                const sPrice = aFields[2].control.getValue();
+                const sPrice = parseFloat(aFields[2].control.getValue()) || 0;
                 const sCurrency = aFields[3].control.getValue();
+
+                const sTotal = (sQuantity * sPrice).toFixed(2);
 
                 oCard.destroy();
 
                 const oUserCard = new sap.m.VBox({
                   width: "90%",
-                  alignItems: "End",
+                  items: []
+                }).addStyleClass("sapUiSmallMargin whiteCard");
+
+                const aPairs = [
+                  { label: "Quantity:", value: sQuantity },
+                  { label: "UOM:", value: sUOM },
+                  { label: "Estimated Unit Price:", value: sPrice },
+                  { label: "Currency:", value: sCurrency },
+                  { label: "Total", value: sTotal }
+                ];
+
+                for (let i = 0; i < aPairs.length; i += 2) {
+                  oUserCard.addItem(new sap.m.HBox({
+                    justifyContent: "SpaceBetween",
+                    wrap: sap.m.FlexWrap.Wrap,
+                    items: [
+                      new sap.m.VBox({
+                        items: [
+                          new sap.m.Label({ text: aPairs[i].label }).addStyleClass("detailLabel"),
+                          new sap.m.Text({ text: aPairs[i].value })
+                        ]
+                      }).addStyleClass("sapUiSmallMarginEnd"),
+                      (aPairs[i + 1] ? new sap.m.VBox({
+                        items: [
+                          new sap.m.Label({ text: aPairs[i + 1].label }).addStyleClass("detailLabel"),
+                          new sap.m.Text({ text: aPairs[i + 1].value })
+                        ]
+                      }) : new sap.m.VBox())
+                    ]
+                  }).addStyleClass("sapUiSmallMarginBottom"));
+                }
+
+                const oUserBubble = new sap.m.HBox({
+                  justifyContent: "End",
+                  width: "100%",
                   items: [
+                    new sap.m.VBox({
+                      items: [oUserCard]
+                    }).addStyleClass("purpleBubble")
+                  ]
+                }).addStyleClass("outerBubble");
+
+                oVBox.addItem(oUserBubble);
+                const sBotFollowUp = "Item has been successfully added to your request #REQ000096. What would you like to do next?";
+                oVBox.addItem(new sap.m.VBox({
+                  justifyContent: "Start",
+                  items: [
+                    new sap.m.VBox({
+                      items: [new sap.m.Text({ text: sBotFollowUp })]
+                    }).addStyleClass("sapUiSmallMarginTop botMessage"),
                     new sap.m.HBox({
-                      justifyContent: "End",
+                      justifyContent: "Start",
                       items: [
-                        new sap.m.VBox({
-                          items: [
-                            new sap.m.Label({ text: `Quantity: ${sQuantity}` }),
-                            new sap.m.Label({ text: `UOM: ${sUOM}` }),
-                            new sap.m.Label({ text: `Price: ${sPrice} ` }),
-                            new sap.m.Label({ text: `Currency: ${sCurrency}` })
-                          ]
-                        }).addStyleClass("userCardStyle")
+                        new sap.m.Button({
+                          text: "Add Another Item",
+                          type: "Default",
+                          press: function () {
+
+                          }
+                        }).addStyleClass("sapUiTinyMarginTop"),
+                        new sap.m.Button({
+                          text: "Review and Submit",
+                          type: "Default",
+                          press: function () {
+
+                          }
+                        }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginBegin")
                       ]
                     })
                   ]
-                }).addStyleClass("sapUiSmallMargin");
+                }));
 
-                oVBox.addItem(oUserCard);
+              }
+
+            })
+          ]
+        }).addStyleClass("sapUiSmallMarginTop");
+
+        oCard.addItem(oFooterBar);
+
+        oVBox.addItem(oCard);
+      }
+      if (response.type === "materialTable" && response.dataPath) {
+        const oCard = new sap.m.VBox({
+          width: "100%",
+          items: []
+        }).addStyleClass("sapUiSmallMarginTop cardStyle");
+
+        // Title
+        oCard.addItem(new sap.m.Label({
+          text: "Select Material",
+          design: "Bold"
+        }).addStyleClass("sapUiSmallMarginBottom"));
+
+        // Search
+        const oTable = new sap.m.Table({
+          fixedLayout: false,
+          columns: [
+            new sap.m.Column({ header: new sap.m.Label({ text: "Material ID" }) }),
+            new sap.m.Column({ header: new sap.m.Label({ text: "Product" }) }),
+          ],
+          items: {
+            path: response.dataPath,
+            template: new sap.m.ColumnListItem({
+              cells: [
+                new sap.m.Text({ text: "{botModel>MaterialID}" }),
+                new sap.m.Text({ text: "{botModel>Product}" }),
+              ]
+            })
+          }
+        }).addStyleClass("scrollableTable");
+
+        const oSearch = new sap.m.SearchField({
+          placeholder: "Search",
+          width: "100%",
+          liveChange: function (oEvent) {
+            const sQuery = oEvent.getParameter("newValue");
+            const oBinding = oTable.getBinding("items");
+            oBinding.filter([
+              new sap.ui.model.Filter([
+                new sap.ui.model.Filter("MaterialID", sap.ui.model.FilterOperator.Contains, sQuery),
+                new sap.ui.model.Filter("Product", sap.ui.model.FilterOperator.Contains, sQuery)
+              ], false)
+            ]);
+          }
+        });
+
+        oCard.addItem(oSearch);
+
+        // Scroll container for table
+        const oScrollContainer = new sap.m.ScrollContainer({
+          height: "200px",
+          vertical: true,
+          horizontal: false,
+          content: [oTable]
+        });
+        oCard.addItem(oScrollContainer);
+
+        const oButtonBar = new sap.m.HBox({
+          justifyContent: "End",
+          items: [
+            new sap.m.Button({
+              text: "Cancel",
+              type: "Transparent",
+              press: function () {
+                oCard.destroy();
+
+              }
+            }),
+            new sap.m.Button({
+              text: "OK",
+              type: "Emphasized",
+              press: function () {
+                oCard.destroy();
+
+
+              }
+            })
+          ]
+        }).addStyleClass("sapUiSmallMarginTop");
+
+        oCard.addItem(oButtonBar);
+        oVBox.addItem(oCard);
+      }
+      if (response.type === "materialitementry") {
+        const oCard = new sap.m.VBox({
+          width: "90%",
+          height: "50%",
+          items: []
+        }).addStyleClass("sapUiSmallMarginTop cardStyle");
+
+        const aFields = [
+          {
+            label: "Quantity:",
+            control: new sap.m.Input({
+              value: "1",
+              type: "Number",
+              width: "150px"
+            })
+          },
+          {
+            label: "UOM:",
+            control: new sap.m.Input({
+              showValueHelp: true,
+              value: "EA-Each",
+              valueHelpRequest: function () {
+                sap.m.MessageToast.show("Open UOM Value Help");
+              },
+              width: "150px"
+            })
+          },
+          {
+            label: "Estimated Unit Price:",
+            control: new sap.m.Input({
+              value: "0.00",
+              type: "Number",
+              width: "150px"
+            })
+          },
+          {
+            label: "Currency:",
+            control: new sap.m.Input({
+              showValueHelp: true,
+              value: "USD",
+              valueHelpRequest: function () {
+                sap.m.MessageToast.show("Open Currency Value Help");
+              },
+              width: "150px"
+            })
+          }
+        ];
+
+        for (let i = 0; i < aFields.length; i += 2) {
+          oCard.addItem(new sap.m.HBox({
+            justifyContent: "SpaceBetween",
+            items: [
+              new sap.m.VBox({
+                items: [
+                  new sap.m.Label({ text: aFields[i].label }),
+                  aFields[i].control
+                ]
+              }),
+              new sap.m.VBox({
+                items: [
+                  new sap.m.Label({ text: aFields[i + 1].label }),
+                  aFields[i + 1].control
+                ]
+              })
+            ]
+          }).addStyleClass("sapUiSmallMarginBottom"));
+        }
+
+        // Footer bar inside the card
+        const oFooterBar = new sap.m.Toolbar({
+          content: [
+            new sap.m.ToolbarSpacer(),
+            new sap.m.Button({
+              text: "Cancel",
+              type: "Transparent",
+              press: function () {
+                oCard.destroy();
+              }
+            }),
+            new sap.m.Button({
+              text: "OK",
+              type: "Emphasized",
+              press: function () {
+                const sQuantity = parseFloat(aFields[0].control.getValue()) || 0;
+                const sUOM = aFields[1].control.getValue();
+                const sPrice = parseFloat(aFields[2].control.getValue()) || 0;
+                const sCurrency = aFields[3].control.getValue();
+
+                const sTotal = (sQuantity * sPrice).toFixed(2);
+
+                oCard.destroy();
+
+                const oUserCard = new sap.m.VBox({
+                  width: "90%",
+                  items: []
+                }).addStyleClass("sapUiSmallMargin whiteCard");
+
+                const aPairs = [
+                  { label: "Quantity:", value: sQuantity },
+                  { label: "UOM:", value: sUOM },
+                  { label: "Estimated Unit Price:", value: sPrice },
+                  { label: "Currency:", value: sCurrency },
+                  { label: "Total", value: sTotal }
+                ];
+
+                for (let i = 0; i < aPairs.length; i += 2) {
+                  oUserCard.addItem(new sap.m.HBox({
+                    justifyContent: "SpaceBetween",
+                    wrap: sap.m.FlexWrap.Wrap,
+                    items: [
+                      new sap.m.VBox({
+                        items: [
+                          new sap.m.Label({ text: aPairs[i].label }).addStyleClass("detailLabel"),
+                          new sap.m.Text({ text: aPairs[i].value })
+                        ]
+                      }).addStyleClass("sapUiSmallMarginEnd"),
+                      (aPairs[i + 1] ? new sap.m.VBox({
+                        items: [
+                          new sap.m.Label({ text: aPairs[i + 1].label }).addStyleClass("detailLabel"),
+                          new sap.m.Text({ text: aPairs[i + 1].value })
+                        ]
+                      }) : new sap.m.VBox())
+                    ]
+                  }).addStyleClass("sapUiSmallMarginBottom"));
+                }
+
+                const oUserBubble = new sap.m.HBox({
+                  justifyContent: "End",
+                  width: "100%",
+                  items: [
+                    new sap.m.VBox({
+                      items: [oUserCard]
+                    }).addStyleClass("purpleBubble")
+                  ]
+                }).addStyleClass("outerBubble");
+
+                oVBox.addItem(oUserBubble);
+                const sBotFollowUp = "Got it.Would you like to add more item specifications?";
+                oVBox.addItem(new sap.m.VBox({
+                  justifyContent: "Start",
+                  items: [
+                    new sap.m.VBox({
+                      items: [new sap.m.Text({ text: sBotFollowUp })]
+                    }).addStyleClass("sapUiSmallMarginTop botMessage"),
+                    new sap.m.HBox({
+                      justifyContent: "Start",
+                      items: [
+                        new sap.m.Button({
+                          text: "Add Item Specifications",
+                          type: "Default",
+                          press: function () {
+
+                          }
+                        }).addStyleClass("sapUiTinyMarginTop"),
+                        new sap.m.Button({
+                          text: "Skip",
+                          type: "Default",
+                          press: function () {
+
+                          }
+                        }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginBegin")
+                      ]
+                    })
+                  ]
+                }));
+
               }
 
             })
@@ -365,58 +800,155 @@ sap.ui.define([
 
       oChatContainer.addItem(oUserMessage);
     },
+_getBotResponse: function (message) {
+    const loweredMsg = message.toLowerCase();
+    const oResponses = this.getView().getModel("botModel").getProperty("/responses");
 
+    // High-priority checks first
+    if (loweredMsg.includes("yes,proceed")) {
+        return {
+            type: "itementry",
+            text: oResponses["Yes,Proceed"]
+        };
+    }
 
-    _getBotResponse: function (message) {
-      const loweredMsg = message.toLowerCase();
-      const oResponses = this.getView().getModel("botModel").getProperty("/responses");
-
-
-      for (let key in oResponses) {
-        if (loweredMsg.includes(key.toLowerCase())) {
-          if (key === "I want to procure laptop battery") {
-            return {
-              type: "table",
-              text: oResponses[key],
-              dataPath: "laptopModel>/laptops"
-            };
-          }
-
-          if (loweredMsg.includes("dell inspiron 15 7000")) {
-            return {
-              type: "text",
-              text: oResponses["Dell Inspiron 15 7000"]
-            };
-          }
-
-
-          if (loweredMsg.includes("yes,create request")) {
-            return {
-              type: "card",
-              text: oResponses["Yes,Create Request"],
-              details: {
+    if (loweredMsg.includes("yes,create request")) {
+        return {
+            type: "card",
+            text: oResponses["Yes,Create Request"],
+            details: {
                 Material: "Laptop Battery",
                 Category: "012-Hardware",
                 Brand: "Dell",
                 "Laptop Model": "Inspiron 15 7000",
                 "Battery Capacity": "42 Wh"
-              }
-            };
-          } if (loweredMsg.includes("yes,proceed")) {
-            return {
-              type: "itementry",
-              text: oResponses["Yes,Proceed"],
-
             }
-          }
-          else {
-            return { type: "text", text: oResponses[key] };
-          }
-        }
-      }
+        };
+    }
 
-      return { type: "text", text: oResponses["default"] };
-    },
+    if (loweredMsg.includes("add another item")) {
+        return {
+            type: "materialTable",
+            text: oResponses["Add Another Item"],
+            dataPath: "botModel>/materials"
+        };
+    }
+
+    if (loweredMsg.includes("computer mouse")) {
+        return {
+            type: "materialitementry",
+            text: oResponses["Computer Mouse"]
+        };
+    }
+
+    if (loweredMsg.includes("add item specifications")) {
+        return {
+            type: "specifications",
+            text: oResponses["Add Item Specifications"]
+        };
+    }
+
+    // Now generic loop for other keys
+    for (let key in oResponses) {
+        if (loweredMsg.includes(key.toLowerCase())) {
+            if (key === "I want to procure laptop battery") {
+                return {
+                    type: "table",
+                    text: oResponses[key],
+                    dataPath: "laptopModel>/laptops"
+                };
+            }
+
+            if (loweredMsg.includes("dell inspiron 15 7000")) {
+                return {
+                    type: "text",
+                    text: oResponses["Dell Inspiron 15 7000"]
+                };
+            }
+
+            return { type: "text", text: oResponses[key] };
+        }
+    }
+
+    // Default fallback
+    return { type: "text", text: oResponses["default"] };
+},
+
+
+    // _getBotResponse: function (message) {
+    //   const loweredMsg = message.toLowerCase();
+    //   const oResponses = this.getView().getModel("botModel").getProperty("/responses");
+
+
+    //   for (let key in oResponses) {
+    //     if (loweredMsg.includes(key.toLowerCase())) {
+
+
+       
+    //       if (key === "I want to procure laptop battery") {
+    //         return {
+    //           type: "table",
+    //           text: oResponses[key],
+    //           dataPath: "laptopModel>/laptops"
+    //         };
+    //       }
+          
+    //       if (loweredMsg.includes("dell inspiron 15 7000")) {
+    //         return {
+    //           type: "text",
+    //           text: oResponses["Dell Inspiron 15 7000"]
+    //         };
+    //       }
+
+
+         
+    //       if (loweredMsg.includes(key.toLowerCase("yes,create request"))) {
+    //         return {
+    //           type: "card",
+    //           text: oResponses["Yes,Create Request"],
+    //           details: {
+    //             Material: "Laptop Battery",
+    //             Category: "012-Hardware",
+    //             Brand: "Dell",
+    //             "Laptop Model": "Inspiron 15 7000",
+    //             "Battery Capacity": "42 Wh"
+    //           }
+    //         };
+    //       }
+    //        if (loweredMsg.includes(key.toLowerCase("yes,proceed"))) {
+    //         return {
+    //           type: "itementry",
+    //           text: oResponses["Yes,Proceed"],
+
+    //         }
+    //       }
+    //       if (key === "Add Another Item") {
+    //         return {
+    //           type: "materialTable",
+    //           text: oResponses[key],
+    //           dataPath: "botModel>/materials"
+    //         };
+    //       }
+    //          if (loweredMsg.includes(key.toLowerCase("computer mouse"))) {
+    //         return {
+    //           type: "materialitementry",
+    //           text: oResponses["Computer Mouse"]
+    //         };
+    //       }
+    //       if (loweredMsg.includes(key.toLowerCase("add item specifications"))) {
+    //         return {
+    //           type: "specifications",
+    //           text: oResponses["Add Item Specifications"]
+    //         }
+    //       }
+    //       else {
+    //         return { type: "text", text: oResponses[key] };
+    //       }
+    //     }
+    //   }
+
+    //   return { type: "text", text: oResponses["default"] };
+    // },
     _scrollToBottom: function () {
       const oScrollContainer = this.byId("chatScrollContainer");
       if (oScrollContainer) {

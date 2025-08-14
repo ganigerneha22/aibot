@@ -45,7 +45,7 @@ showHeader="false"
 
        </VBox>
           <VBox class="sapUiLargeMarginTop" >
-          <Text text="Hello Nolan," class="chatGreetingText  " />
+          <Text text="Hello Neha," class="chatGreetingText  " />
           <Text text="How can I help you?" class="chatTitleText " />
           </VBox>
           <VBox class="card sapUiTinyMarginTop" >
@@ -56,7 +56,7 @@ showHeader="false"
     <VBox width="100%" class="chatWrapperVBox">
 
     <VBox id="compactGreeting" visible="false" class="compactGreetingVBox sapUiSmallMarginTop sapUiTinyMargin">
-    <Text text="Hi Neh👋 How can I assist you today?" class="compactGreetingText" />
+    <Text text="Hi Neha👋 How can I assist you today?" class="compactGreetingText" />
     <Text text="Select an option below or, type what you would like to do" class="sapUiTinyMarginBottom" />
      <FlexBox wrap="Wrap" class="greetingOptionsBox sapUiSmallMarginTop">
    

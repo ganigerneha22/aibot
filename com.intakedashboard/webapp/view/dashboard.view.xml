@@ -1,10 +1,88 @@
-<mvc:View controllerName="com.intakedashboard.controller.dashboard"
+<mvc:View
+    controllerName="com.intakedashboard.controller.dashboard"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="Intake Management">
-    <Toolbar >
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="page"
+    >
+        <!-- <Toolbar >
      
       <Button icon="sap-icon://da"  press=".onChatBotClick"  ></Button>
-    </Toolbar>
+    </Toolbar> -->
+        <headerContent>
+            <core:Fragment
+                fragmentName="com.intakedashboard.fragments.HeaderBar"
+                type="XML"
+            />
+        </headerContent>
+        <VBox
+            width="100%"
+            class="imageWrapper"
+        >
+            <Image
+                src="images/BGImage.png"
+                class="centerImage"
+            />
+            <FlexBox
+                class="overlayContainer"
+                alignItems="Center"
+                justifyContent="Center"
+                direction="Column"
+            >
+                <Avatar
+                    src="images/avatar.png"
+                    displaySize="Custom"
+                    customDisplaySize="32px"
+                    customFontSize="16px"
+                    showBorder="true"
+                    class="customAvatar"
+                    press="onAvatarPress"
+                />
+                <Text
+                    text="Welcome Justin Donin"
+                    class="overlayTitle"
+                />
+                <Text
+                    text="Start a New Request and Track Progress Seamlessly Today"
+                    class="overlaySubtitle"
+                />
+                <!--  Hidden ComboBox to show on button click  -->
+                <ComboBox
+                    width="400px"
+                    id="requestSearch"
+                    visible="false"
+                    items="{ path: '/suggestions', sorter: { path: 'text' } }"
+                    change="onRequestSelect"
+                    placeholder="Type your request or choose from option below"
+                >
+                    <core:Item
+                        key="{key}"
+                        text="{text}"
+                    />
+                </ComboBox>
+                <!--  New Request Button  -->
+                <Button
+                    text="New Request"
+                    icon="sap-icon://add"
+                    type="Default"
+                    press="onNewRequestPress"
+                    class="pillNewRequestButton"
+                />
+            </FlexBox>
+        </VBox>
+        <!--  Cards  -->
+        <core:Fragment
+            fragmentName="com.intakedashboard.fragments.QuickCards"
+            type="XML"
+        />
+        <!-- WorkList -->
+        <core:Fragment
+            fragmentName="com.intakedashboard.fragments.WorkList"
+            type="XML"
+        />
+
+        
     </Page>
 </mvc:View>
