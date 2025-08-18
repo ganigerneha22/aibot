@@ -236,7 +236,6 @@ sap.ui.define([
 
         // Search
         const oTable = new sap.m.Table({
-          fixedLayout: false,
           columns: [
             new sap.m.Column({ header: new sap.m.Label({ text: "Brand" }) }),
             new sap.m.Column({ header: new sap.m.Label({ text: "Laptop Model" }) }),
@@ -854,30 +853,30 @@ sap.ui.define([
                   { label: "Brand:", value: sBrand }
                 ];
 
-                  let oHeaderRow = new sap.m.HBox({
-                    items: aPairs.map(pair =>
-                      new sap.m.Label({
-                        text: pair.label
-                      }).addStyleClass("detailLabel").setWidth("100%")
-                    ),
-                    justifyContent: "SpaceBetween"
-                  });
+                let oHeaderRow = new sap.m.HBox({
+                  items: aPairs.map(pair =>
+                    new sap.m.Label({
+                      text: pair.label
+                    }).addStyleClass("detailLabel").setWidth("100%")
+                  ),
+                  justifyContent: "SpaceBetween"
+                });
 
-                  let oValueRow = new sap.m.HBox({
-                    items: aPairs.map(pair =>
-                      new sap.m.Text({
-                        text: pair.value
-                      }).addStyleClass("detailValue").setWidth("100%")
-                    ),
-                    justifyContent: "SpaceBetween"
-                  });
+                let oValueRow = new sap.m.HBox({
+                  items: aPairs.map(pair =>
+                    new sap.m.Text({
+                      text: pair.value
+                    }).addStyleClass("detailValue").setWidth("100%")
+                  ),
+                  justifyContent: "SpaceBetween"
+                });
 
-                  oUserCard.addItem(
-                    new sap.m.VBox({
-                      items: [oHeaderRow, oValueRow]
-                    }).addStyleClass("sapUiSmallMarginBottom")
-                  );
-                
+                oUserCard.addItem(
+                  new sap.m.VBox({
+                    items: [oHeaderRow, oValueRow]
+                  }).addStyleClass("sapUiSmallMarginBottom")
+                );
+
 
                 const oUserBubble = new sap.m.HBox({
                   justifyContent: "End",
@@ -912,21 +911,21 @@ sap.ui.define([
                           text: "Review and Submit",
                           type: "Default",
                           press: function () {
- const oUserBubble = new sap.m.HBox({
-      justifyContent: "End",
-      width: "100%",
-      items: [
-        new sap.m.VBox({
-          items: [
-            new sap.m.Text({
-              text: "Review and Submit"
-            }).addStyleClass("detailValue")
-          ]
-        }).addStyleClass("purpleBubble")
-      ]
-    }).addStyleClass("outerBubble");
+                            const oUserBubble = new sap.m.HBox({
+                              justifyContent: "End",
+                              width: "100%",
+                              items: [
+                                new sap.m.VBox({
+                                  items: [
+                                    new sap.m.Text({
+                                      text: "Review and Submit"
+                                    }).addStyleClass("detailValue")
+                                  ]
+                                }).addStyleClass("purpleBubble")
+                              ]
+                            })
 
-    oVBox.addItem(oUserBubble);
+                            oVBox.addItem(oUserBubble);
                           }
                         }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginBegin")
                       ]
