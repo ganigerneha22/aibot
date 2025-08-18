@@ -57,18 +57,21 @@ showHeader="false"
 
     <VBox id="compactGreeting" visible="false" class="compactGreetingVBox sapUiSmallMarginTop sapUiTinyMargin">
     <Text text="Hi Neha👋 How can I assist you today?" class="compactGreetingText" />
-    <Text text="Select an option below or, type what you would like to do" class="sapUiTinyMarginBottom" />
-     <FlexBox wrap="Wrap" class="greetingOptionsBox sapUiSmallMarginTop">
-   
-   <!-- <VBox items="{botModel>/templates}">
+    <!-- <Text text="Select an option below or, type what you would like to do" class="sapUiTinyMarginBottom" />
+ <FlexBox wrap="Wrap" 
+         justifyContent="Start"   
+         alignItems="Start"
+         class="greetingOptionsBox sapUiSmallMarginTop"
+         items="{botModel>/templates}">
   <Button 
     text="{botModel>text}" 
-    type="Transparent" 
-    class="optionButton" 
-    press=".onTemplateSelected"
-  />
-</VBox> -->
-  </FlexBox>
+    type="Transparent"
+    
+    class="optionButton sapUiTinyMargin sapUiTinyMarginEnd" 
+    press="onTemplateSelected" />
+</FlexBox> -->
+
+
   </VBox>
     <VBox id="chatContainer" width="100%" class="chatContainer"/>
      </VBox>

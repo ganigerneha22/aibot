@@ -129,8 +129,8 @@
     opacity: 0;
   }
   .compactGreetingVBox {
-    height: 82px;
-    width:344px ;
+    height: 30px;
+    width:300px ;
     background: rgb(232, 232, 232);
     border-radius: 1rem;
     padding: 1rem;
