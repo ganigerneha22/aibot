@@ -103,7 +103,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 .cardStyle2{
-   max-width: 80%;
+    max-width: 100%;
     box-sizing: border-box;
     word-wrap: break-word;
     border-radius: 8px;
@@ -192,6 +192,7 @@
     border-radius: 10px;
     padding: 10px 15px;
     max-width: 85%;
+    
     word-wrap: break-word;
     color: #333;
     font-size: 14px;
@@ -233,7 +234,7 @@
 .purpleBubble {
     background-color: #e8e1f8; 
     border-radius: 10px;
-    width: 320px;
+    width: auto;
     padding: 0.2rem;
     display: inline-block; 
     right: 2px;

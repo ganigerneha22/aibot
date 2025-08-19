@@ -486,7 +486,86 @@ sap.ui.define([
                           text: "Add Another Item",
                           type: "Default",
                           press: function () {
+                            const oCard = new sap.m.VBox({
+                              width: "100%",
+                              items: []
+                            }).addStyleClass("sapUiSmallMarginTop cardStyle");
 
+                            // Title
+                            oCard.addItem(new sap.m.Label({
+                              text: "Select Material",
+                              design: "Bold"
+                            }).addStyleClass("sapUiSmallMarginBottom"));
+
+                            // Search
+                            const oTable = new sap.m.Table({
+                              fixedLayout: false,
+                              columns: [
+                                new sap.m.Column({ header: new sap.m.Label({ text: "Material ID" }) }),
+                                new sap.m.Column({ header: new sap.m.Label({ text: "Product" }) }),
+                              ],
+                              items: {
+                                path: "botModel>/materials",
+                                template: new sap.m.ColumnListItem({
+                                  cells: [
+                                    new sap.m.Text({ text: "{botModel>MaterialID}" }),
+                                    new sap.m.Text({ text: "{botModel>Product}" }),
+                                  ]
+                                })
+                              }
+                            }).addStyleClass("scrollableTable");
+
+                            const oSearch = new sap.m.SearchField({
+                              placeholder: "Search",
+                              width: "100%",
+                              liveChange: function (oEvent) {
+                                const sQuery = oEvent.getParameter("newValue");
+                                const oBinding = oTable.getBinding("items");
+                                oBinding.filter([
+                                  new sap.ui.model.Filter([
+                                    new sap.ui.model.Filter("MaterialID", sap.ui.model.FilterOperator.Contains, sQuery),
+                                    new sap.ui.model.Filter("Product", sap.ui.model.FilterOperator.Contains, sQuery)
+                                  ], false)
+                                ]);
+                              }
+                            });
+
+                            oCard.addItem(oSearch);
+
+                            // Scroll container for table
+                            const oScrollContainer = new sap.m.ScrollContainer({
+                              height: "200px",
+                              vertical: true,
+                              horizontal: false,
+                              content: [oTable]
+                            });
+                            oCard.addItem(oScrollContainer);
+
+                            const oButtonBar = new sap.m.HBox({
+                              justifyContent: "End",
+                              items: [
+                                new sap.m.Button({
+                                  text: "Cancel",
+                                  type: "Transparent",
+                                  press: function () {
+                                    oCard.destroy();
+
+                                  }
+                                }),
+                                new sap.m.Button({
+                                  text: "OK",
+                                  type: "Emphasized",
+                                  press: function () {
+                                    oCard.destroy();
+
+
+                                  }
+                                })
+                              ]
+                            }).addStyleClass("sapUiSmallMarginTop");
+
+                            oCard.addItem(oButtonBar);
+                            oVBox.addItem(oCard);
                           }
                         }).addStyleClass("sapUiTinyMarginTop"),
                         new sap.m.Button({
@@ -511,88 +590,88 @@ sap.ui.define([
 
         oVBox.addItem(oCard);
       }
-      if (response.type === "materialTable" && response.dataPath) {
-        const oCard = new sap.m.VBox({
-          width: "100%",
-          items: []
-        }).addStyleClass("sapUiSmallMarginTop cardStyle");
+      // if (response.type === "materialTable" && response.dataPath) {
+      //   const oCard = new sap.m.VBox({
+      //     width: "100%",
+      //     items: []
+      //   }).addStyleClass("sapUiSmallMarginTop cardStyle");
 
-        // Title
-        oCard.addItem(new sap.m.Label({
-          text: "Select Material",
-          design: "Bold"
-        }).addStyleClass("sapUiSmallMarginBottom"));
+      //   // Title
+      //   oCard.addItem(new sap.m.Label({
+      //     text: "Select Material",
+      //     design: "Bold"
+      //   }).addStyleClass("sapUiSmallMarginBottom"));
 
-        // Search
-        const oTable = new sap.m.Table({
-          fixedLayout: false,
-          columns: [
-            new sap.m.Column({ header: new sap.m.Label({ text: "Material ID" }) }),
-            new sap.m.Column({ header: new sap.m.Label({ text: "Product" }) }),
-          ],
-          items: {
-            path: response.dataPath,
-            template: new sap.m.ColumnListItem({
-              cells: [
-                new sap.m.Text({ text: "{botModel>MaterialID}" }),
-                new sap.m.Text({ text: "{botModel>Product}" }),
-              ]
-            })
-          }
-        }).addStyleClass("scrollableTable");
+      //   // Search
+      //   const oTable = new sap.m.Table({
+      //     fixedLayout: false,
+      //     columns: [
+      //       new sap.m.Column({ header: new sap.m.Label({ text: "Material ID" }) }),
+      //       new sap.m.Column({ header: new sap.m.Label({ text: "Product" }) }),
+      //     ],
+      //     items: {
+      //       path: response.dataPath,
+      //       template: new sap.m.ColumnListItem({
+      //         cells: [
+      //           new sap.m.Text({ text: "{botModel>MaterialID}" }),
+      //           new sap.m.Text({ text: "{botModel>Product}" }),
+      //         ]
+      //       })
+      //     }
+      //   }).addStyleClass("scrollableTable");
 
-        const oSearch = new sap.m.SearchField({
-          placeholder: "Search",
-          width: "100%",
-          liveChange: function (oEvent) {
-            const sQuery = oEvent.getParameter("newValue");
-            const oBinding = oTable.getBinding("items");
-            oBinding.filter([
-              new sap.ui.model.Filter([
-                new sap.ui.model.Filter("MaterialID", sap.ui.model.FilterOperator.Contains, sQuery),
-                new sap.ui.model.Filter("Product", sap.ui.model.FilterOperator.Contains, sQuery)
-              ], false)
-            ]);
-          }
-        });
+      //   const oSearch = new sap.m.SearchField({
+      //     placeholder: "Search",
+      //     width: "100%",
+      //     liveChange: function (oEvent) {
+      //       const sQuery = oEvent.getParameter("newValue");
+      //       const oBinding = oTable.getBinding("items");
+      //       oBinding.filter([
+      //         new sap.ui.model.Filter([
+      //           new sap.ui.model.Filter("MaterialID", sap.ui.model.FilterOperator.Contains, sQuery),
+      //           new sap.ui.model.Filter("Product", sap.ui.model.FilterOperator.Contains, sQuery)
+      //         ], false)
+      //       ]);
+      //     }
+      //   });
 
-        oCard.addItem(oSearch);
+      //   oCard.addItem(oSearch);
 
-        // Scroll container for table
-        const oScrollContainer = new sap.m.ScrollContainer({
-          height: "200px",
-          vertical: true,
-          horizontal: false,
-          content: [oTable]
-        });
-        oCard.addItem(oScrollContainer);
+      //   // Scroll container for table
+      //   const oScrollContainer = new sap.m.ScrollContainer({
+      //     height: "200px",
+      //     vertical: true,
+      //     horizontal: false,
+      //     content: [oTable]
+      //   });
+      //   oCard.addItem(oScrollContainer);
 
-        const oButtonBar = new sap.m.HBox({
-          justifyContent: "End",
-          items: [
-            new sap.m.Button({
-              text: "Cancel",
-              type: "Transparent",
-              press: function () {
-                oCard.destroy();
+      //   const oButtonBar = new sap.m.HBox({
+      //     justifyContent: "End",
+      //     items: [
+      //       new sap.m.Button({
+      //         text: "Cancel",
+      //         type: "Transparent",
+      //         press: function () {
+      //           oCard.destroy();
 
-              }
-            }),
-            new sap.m.Button({
-              text: "OK",
-              type: "Emphasized",
-              press: function () {
-                oCard.destroy();
+      //         }
+      //       }),
+      //       new sap.m.Button({
+      //         text: "OK",
+      //         type: "Emphasized",
+      //         press: function () {
+      //           oCard.destroy();
 
 
-              }
-            })
-          ]
-        }).addStyleClass("sapUiSmallMarginTop");
+      //         }
+      //       })
+      //     ]
+      //   }).addStyleClass("sapUiSmallMarginTop");
 
-        oCard.addItem(oButtonBar);
-        oVBox.addItem(oCard);
-      }
+      //   oCard.addItem(oButtonBar);
+      //   oVBox.addItem(oCard);
+      // }
       if (response.type === "materialitementry") {
         const oCard = new sap.m.VBox({
           width: "90%",
@@ -744,7 +823,176 @@ sap.ui.define([
                           text: "Add Item Specifications",
                           type: "Default",
                           press: function () {
+                            const oCard = new sap.m.VBox({
+                              width: "90%",
+                              items: []
+                            }).addStyleClass("sapUiSmallMarginTop cardStyle");
 
+                            // Fields for specifications
+                            const aFields = [
+                              {
+                                label: "Type:",
+                                control: new sap.m.Input({
+                                  value: "Wireless",
+                                  showValueHelp: true,
+                                  valueHelpRequest: function () {
+                                    sap.m.MessageToast.show("Open Type Value Help");
+                                  },
+                                  width: "150px"
+                                })
+                              },
+                              {
+                                label: "Brand:",
+                                control: new sap.m.Input({
+                                  value: "Lenovo",
+                                  showValueHelp: true,
+                                  valueHelpRequest: function () {
+                                    sap.m.MessageToast.show("Open Brand Value Help");
+                                  },
+                                  width: "150px"
+                                })
+                              }
+                            ];
+
+                            // Arrange fields in rows (2 per row)
+                            for (let i = 0; i < aFields.length; i += 2) {
+                              oCard.addItem(new sap.m.HBox({
+                                justifyContent: "SpaceBetween",
+                                items: [
+                                  new sap.m.VBox({
+                                    items: [
+                                      new sap.m.Label({ text: aFields[i].label }),
+                                      aFields[i].control
+                                    ]
+                                  }),
+                                  new sap.m.VBox({
+                                    items: [
+                                      new sap.m.Label({ text: aFields[i + 1].label }),
+                                      aFields[i + 1].control
+                                    ]
+                                  })
+                                ]
+                              }).addStyleClass("sapUiSmallMarginBottom"));
+                            }
+
+                            // Footer bar inside the card
+                            const oFooterBar = new sap.m.Toolbar({
+                              content: [
+                                new sap.m.ToolbarSpacer(),
+                                new sap.m.Button({
+                                  text: "Skip",
+                                  type: "Transparent",
+                                  press: function () {
+                                    oCard.destroy();
+                                  }
+                                }),
+                                new sap.m.Button({
+                                  text: "OK",
+                                  type: "Emphasized",
+                                  press: function () {
+                                    const sType = aFields[0].control.getValue();
+                                    const sBrand = aFields[1].control.getValue();
+
+                                    oCard.destroy();
+
+                                    // User bubble card
+                                    const oUserCard = new sap.m.VBox({
+                                      width: "90%",
+                                      items: []
+                                    }).addStyleClass("sapUiSmallMargin whiteCard");
+
+                                    const aPairs = [
+                                      { label: "Type:", value: sType },
+                                      { label: "Brand:", value: sBrand }
+                                    ];
+
+                                    let oHeaderRow = new sap.m.HBox({
+                                      items: aPairs.map(pair =>
+                                        new sap.m.Label({
+                                          text: pair.label
+                                        }).addStyleClass("detailLabel").setWidth("100%")
+                                      ),
+                                      justifyContent: "SpaceBetween"
+                                    });
+
+                                    let oValueRow = new sap.m.HBox({
+                                      items: aPairs.map(pair =>
+                                        new sap.m.Text({
+                                          text: pair.value
+                                        }).addStyleClass("detailValue").setWidth("100%")
+                                      ),
+                                      justifyContent: "SpaceBetween"
+                                    });
+
+                                    oUserCard.addItem(
+                                      new sap.m.VBox({
+                                        items: [oHeaderRow, oValueRow]
+                                      }).addStyleClass("sapUiSmallMarginBottom")
+                                    );
+
+
+                                    const oUserBubble = new sap.m.HBox({
+                                      justifyContent: "End",
+                                      width: "100%",
+                                      items: [
+                                        new sap.m.VBox({
+                                          items: [oUserCard]
+                                        }).addStyleClass("purpleBubble")
+                                      ]
+                                    }).addStyleClass("outerBubble");
+
+                                    oVBox.addItem(oUserBubble);
+
+                                    // Bot follow-up
+                                    const sBotFollowUp = "Item 2 has been successfully added to your request# REQ000096. What would you like to do rest?";
+                                    oVBox.addItem(new sap.m.VBox({
+                                      justifyContent: "Start",
+                                      items: [
+                                        new sap.m.VBox({
+                                          items: [new sap.m.Text({ text: sBotFollowUp })]
+                                        }).addStyleClass("sapUiSmallMarginTop botMessage"),
+                                        new sap.m.HBox({
+                                          justifyContent: "Start",
+                                          items: [
+                                            new sap.m.Button({
+                                              text: "Add Another Item",
+                                              type: "Default",
+                                              press: function () {
+                                              }
+                                            }).addStyleClass("sapUiTinyMarginTop"),
+                                            new sap.m.Button({
+                                              text: "Review and Submit",
+                                              type: "Default",
+                                              press: function () {
+                                                const oUserBubble = new sap.m.HBox({
+                                                  justifyContent: "End",
+                                                  width: "100%",
+                                                  items: [
+                                                    new sap.m.VBox({
+                                                      items: [
+                                                        new sap.m.Text({
+                                                          text: "Review and Submit"
+                                                        }).addStyleClass("detailValue")
+                                                      ]
+                                                    }).addStyleClass("purpleBubble")
+                                                  ]
+                                                }).addStyleClass("outerBubble");
+
+                                                oVBox.addItem(oUserBubble);
+                                              }
+                                            }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginBegin")
+                                          ]
+                                        })
+                                      ]
+                                    }));
+
+                                  }
+                                })
+                              ]
+                            }).addStyleClass("sapUiSmallMarginTop");
+
+                            oCard.addItem(oFooterBar);
+                            oVBox.addItem(oCard);
                           }
                         }).addStyleClass("sapUiTinyMarginTop"),
                         new sap.m.Button({
@@ -769,177 +1017,264 @@ sap.ui.define([
 
         oVBox.addItem(oCard);
       }
-      if (response.type === "specifications") {
-        const oCard = new sap.m.VBox({
-          width: "90%",
-          items: []
-        }).addStyleClass("sapUiSmallMarginTop cardStyle");
+      // if (response.type === "specifications") {
+      //   const oCard = new sap.m.VBox({
+      //     width: "90%",
+      //     items: []
+      //   }).addStyleClass("sapUiSmallMarginTop cardStyle");
 
-        // Fields for specifications
-        const aFields = [
-          {
-            label: "Type:",
-            control: new sap.m.Input({
-              value: "Wireless",
-              showValueHelp: true,
-              valueHelpRequest: function () {
-                sap.m.MessageToast.show("Open Type Value Help");
-              },
-              width: "150px"
-            })
-          },
-          {
-            label: "Brand:",
-            control: new sap.m.Input({
-              value: "Lenovo",
-              showValueHelp: true,
-              valueHelpRequest: function () {
-                sap.m.MessageToast.show("Open Brand Value Help");
-              },
-              width: "150px"
-            })
-          }
-        ];
+      //   // Fields for specifications
+      //   const aFields = [
+      //     {
+      //       label: "Type:",
+      //       control: new sap.m.Input({
+      //         value: "Wireless",
+      //         showValueHelp: true,
+      //         valueHelpRequest: function () {
+      //           sap.m.MessageToast.show("Open Type Value Help");
+      //         },
+      //         width: "150px"
+      //       })
+      //     },
+      //     {
+      //       label: "Brand:",
+      //       control: new sap.m.Input({
+      //         value: "Lenovo",
+      //         showValueHelp: true,
+      //         valueHelpRequest: function () {
+      //           sap.m.MessageToast.show("Open Brand Value Help");
+      //         },
+      //         width: "150px"
+      //       })
+      //     }
+      //   ];
 
-        // Arrange fields in rows (2 per row)
-        for (let i = 0; i < aFields.length; i += 2) {
-          oCard.addItem(new sap.m.HBox({
-            justifyContent: "SpaceBetween",
-            items: [
-              new sap.m.VBox({
-                items: [
-                  new sap.m.Label({ text: aFields[i].label }),
-                  aFields[i].control
-                ]
-              }),
-              new sap.m.VBox({
-                items: [
-                  new sap.m.Label({ text: aFields[i + 1].label }),
-                  aFields[i + 1].control
-                ]
-              })
-            ]
-          }).addStyleClass("sapUiSmallMarginBottom"));
-        }
+      //   // Arrange fields in rows (2 per row)
+      //   for (let i = 0; i < aFields.length; i += 2) {
+      //     oCard.addItem(new sap.m.HBox({
+      //       justifyContent: "SpaceBetween",
+      //       items: [
+      //         new sap.m.VBox({
+      //           items: [
+      //             new sap.m.Label({ text: aFields[i].label }),
+      //             aFields[i].control
+      //           ]
+      //         }),
+      //         new sap.m.VBox({
+      //           items: [
+      //             new sap.m.Label({ text: aFields[i + 1].label }),
+      //             aFields[i + 1].control
+      //           ]
+      //         })
+      //       ]
+      //     }).addStyleClass("sapUiSmallMarginBottom"));
+      //   }
 
-        // Footer bar inside the card
-        const oFooterBar = new sap.m.Toolbar({
-          content: [
-            new sap.m.ToolbarSpacer(),
-            new sap.m.Button({
-              text: "Skip",
-              type: "Transparent",
-              press: function () {
-                oCard.destroy();
-              }
-            }),
-            new sap.m.Button({
-              text: "OK",
-              type: "Emphasized",
-              press: function () {
-                const sType = aFields[0].control.getValue();
-                const sBrand = aFields[1].control.getValue();
+      //   // Footer bar inside the card
+      //   const oFooterBar = new sap.m.Toolbar({
+      //     content: [
+      //       new sap.m.ToolbarSpacer(),
+      //       new sap.m.Button({
+      //         text: "Skip",
+      //         type: "Transparent",
+      //         press: function () {
+      //           oCard.destroy();
+      //         }
+      //       }),
+      //       new sap.m.Button({
+      //         text: "OK",
+      //         type: "Emphasized",
+      //         press: function () {
+      //           const sType = aFields[0].control.getValue();
+      //           const sBrand = aFields[1].control.getValue();
 
-                oCard.destroy();
+      //           oCard.destroy();
 
-                // User bubble card
-                const oUserCard = new sap.m.VBox({
-                  width: "90%",
-                  items: []
-                }).addStyleClass("sapUiSmallMargin whiteCard");
+      //           // User bubble card
+      //           const oUserCard = new sap.m.VBox({
+      //             width: "90%",
+      //             items: []
+      //           }).addStyleClass("sapUiSmallMargin whiteCard");
 
-                const aPairs = [
-                  { label: "Type:", value: sType },
-                  { label: "Brand:", value: sBrand }
-                ];
+      //           const aPairs = [
+      //             { label: "Type:", value: sType },
+      //             { label: "Brand:", value: sBrand }
+      //           ];
 
-                let oHeaderRow = new sap.m.HBox({
-                  items: aPairs.map(pair =>
-                    new sap.m.Label({
-                      text: pair.label
-                    }).addStyleClass("detailLabel").setWidth("100%")
-                  ),
-                  justifyContent: "SpaceBetween"
-                });
+      //           let oHeaderRow = new sap.m.HBox({
+      //             items: aPairs.map(pair =>
+      //               new sap.m.Label({
+      //                 text: pair.label
+      //               }).addStyleClass("detailLabel").setWidth("100%")
+      //             ),
+      //             justifyContent: "SpaceBetween"
+      //           });
 
-                let oValueRow = new sap.m.HBox({
-                  items: aPairs.map(pair =>
-                    new sap.m.Text({
-                      text: pair.value
-                    }).addStyleClass("detailValue").setWidth("100%")
-                  ),
-                  justifyContent: "SpaceBetween"
-                });
+      //           let oValueRow = new sap.m.HBox({
+      //             items: aPairs.map(pair =>
+      //               new sap.m.Text({
+      //                 text: pair.value
+      //               }).addStyleClass("detailValue").setWidth("100%")
+      //             ),
+      //             justifyContent: "SpaceBetween"
+      //           });
 
-                oUserCard.addItem(
-                  new sap.m.VBox({
-                    items: [oHeaderRow, oValueRow]
-                  }).addStyleClass("sapUiSmallMarginBottom")
-                );
+      //           oUserCard.addItem(
+      //             new sap.m.VBox({
+      //               items: [oHeaderRow, oValueRow]
+      //             }).addStyleClass("sapUiSmallMarginBottom")
+      //           );
 
 
-                const oUserBubble = new sap.m.HBox({
-                  justifyContent: "End",
-                  width: "100%",
+      //           const oUserBubble = new sap.m.HBox({
+      //             justifyContent: "End",
+      //             width: "100%",
+      //             items: [
+      //               new sap.m.VBox({
+      //                 items: [oUserCard]
+      //               }).addStyleClass("purpleBubble")
+      //             ]
+      //           }).addStyleClass("outerBubble");
+
+      //           oVBox.addItem(oUserBubble);
+
+      //           // Bot follow-up
+      //           const sBotFollowUp = "Item 2 has been successfully added to your request# REQ000096. What would you like to do rest?";
+      //           oVBox.addItem(new sap.m.VBox({
+      //             justifyContent: "Start",
+      //             items: [
+      //               new sap.m.VBox({
+      //                 items: [new sap.m.Text({ text: sBotFollowUp })]
+      //               }).addStyleClass("sapUiSmallMarginTop botMessage"),
+      //               new sap.m.HBox({
+      //                 justifyContent: "Start",
+      //                 items: [
+      //                   new sap.m.Button({
+      //                     text: "Add Another Item",
+      //                     type: "Default",
+      //                     press: function () {
+      //                     }
+      //                   }).addStyleClass("sapUiTinyMarginTop"),
+      //                   new sap.m.Button({
+      //                     text: "Review and Submit",
+      //                     type: "Default",
+      //                     press: function () {
+      //                       const oUserBubble = new sap.m.HBox({
+      //                         justifyContent: "End",
+      //                         width: "100%",
+      //                         items: [
+      //                           new sap.m.VBox({
+      //                             items: [
+      //                               new sap.m.Text({
+      //                                 text: "Review and Submit"
+      //                               }).addStyleClass("detailValue")
+      //                             ]
+      //                           }).addStyleClass("purpleBubble")
+      //                         ]
+      //                       })
+
+      //                       oVBox.addItem(oUserBubble);
+      //                     }
+      //                   }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginBegin")
+      //                 ]
+      //               })
+      //             ]
+      //           }));
+
+      //         }
+      //       })
+      //     ]
+      //   }).addStyleClass("sapUiSmallMarginTop");
+
+      //   oCard.addItem(oFooterBar);
+      //   oVBox.addItem(oCard);
+      // }
+      if (response.type === "createRequest") {
+        console.log("create req");
+
+        const oUserBubble = new sap.m.HBox({
+          justifyContent: "Start",
+          width: "100%",
+          items: [
+            new sap.m.VBox({
+              items: [
+                new sap.m.HBox({
                   items: [
-                    new sap.m.VBox({
-                      items: [oUserCard]
-                    }).addStyleClass("purpleBubble")
-                  ]
-                }).addStyleClass("outerBubble");
-
-                oVBox.addItem(oUserBubble);
-
-                // Bot follow-up
-                const sBotFollowUp = "Item 2 has been successfully added to your request# REQ000096. What would you like to do rest?";
-                oVBox.addItem(new sap.m.VBox({
-                  justifyContent: "Start",
-                  items: [
-                    new sap.m.VBox({
-                      items: [new sap.m.Text({ text: sBotFollowUp })]
-                    }).addStyleClass("sapUiSmallMarginTop botMessage"),
-                    new sap.m.HBox({
-                      justifyContent: "Start",
-                      items: [
-                        new sap.m.Button({
-                          text: "Add Another Item",
-                          type: "Default",
-                          press: function () {
+                    new sap.m.Button({
+                      text: "Yes, Create Request",
+                      type: "Default",
+                      press: function () {
+                        const cardResponse = {
+                          type: "card",
+                          details: {
+                            "Request ID": "REQ00096",
+                            "Title": "Dell Inspiron 15 7000",
+                            "Category": "Laptop",
+                            "Requested By": "Neha",
+                            "Need By": "20/08/2025"
                           }
-                        }).addStyleClass("sapUiTinyMarginTop"),
-                        new sap.m.Button({
-                          text: "Review and Submit",
-                          type: "Default",
-                          press: function () {
-                            const oUserBubble = new sap.m.HBox({
-                              justifyContent: "End",
-                              width: "100%",
-                              items: [
-                                new sap.m.VBox({
-                                  items: [
-                                    new sap.m.Text({
-                                      text: "Review and Submit"
-                                    }).addStyleClass("detailValue")
-                                  ]
-                                }).addStyleClass("purpleBubble")
-                              ]
-                            })
+                        };
 
-                            oVBox.addItem(oUserBubble);
-                          }
-                        }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginBegin")
-                      ]
+                        const oCard = new sap.m.VBox({
+                          width: "100%",
+                          fitContainer: true,
+                          items: []
+                        }).addStyleClass(" cardStyle2");
+
+                        const aDetailKeys = Object.keys(cardResponse.details);
+                        for (let i = 0; i < aDetailKeys.length; i += 2) {
+                          oCard.addItem(new sap.m.HBox({
+                            justifyContent: "Start",
+                            wrap: sap.m.FlexWrap.Wrap,
+                            items: [
+                              new sap.m.VBox({
+                                items: [
+                                  new sap.m.Label({ text: aDetailKeys[i] + ":" }).addStyleClass("detailLabel"),
+                                  new sap.m.Text({ text: cardResponse.details[aDetailKeys[i]] })
+                                ]
+                              }).addStyleClass("sapUiSmallMarginEnd")
+                                .setLayoutData(new sap.m.FlexItemData({ growFactor: 1 })),
+
+                              (aDetailKeys[i + 1] ? new sap.m.VBox({
+                                items: [
+                                  new sap.m.Label({ text: aDetailKeys[i + 1] + ":" }).addStyleClass("detailLabel"),
+                                  new sap.m.Text({ text: cardResponse.details[aDetailKeys[i + 1]] })
+                                ]
+                              }).setLayoutData(new sap.m.FlexItemData({ growFactor: 1 }))
+                                : new sap.m.VBox())
+                            ]
+                          }).addStyleClass("sapUiSmallMarginBottom "));
+                        }
+
+                        const oOuterCard = new sap.m.VBox({
+                          width: "100%",
+                          items: [
+                            new sap.m.Text({
+                              text: "I found a similar item listed in Ariba library.Would you like to proceed with this item?"
+                            }).addStyleClass("sapUiSmallMarginBottom ")
+                            , oCard]
+                        }).addStyleClass("botMessage");
+
+
+                        oVBox.addItem(oOuterCard);
+                      }
+                    }).addStyleClass("sapUiTinyMarginEnd"),
+
+                    new sap.m.Button({
+                      text: "No, Cancel",
+                      type: "Default",
+                      press: function () {
+                        MessageToast.show("Request cancelled");
+                      }
                     })
                   ]
-                }));
-
-              }
-            })
+                })
+              ]
+            }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginBegin")
           ]
-        }).addStyleClass("sapUiSmallMarginTop");
+        });
 
-        oCard.addItem(oFooterBar);
-        oVBox.addItem(oCard);
+        oVBox.addItem(oUserBubble);
       }
 
 
@@ -1034,7 +1369,7 @@ sap.ui.define([
 
           if (loweredMsg.includes("dell inspiron 15 7000")) {
             return {
-              type: "text",
+              type: "createRequest",
               text: oResponses["Dell Inspiron 15 7000"]
             };
           }

@@ -1,92 +1,55 @@
-<core:FragmentDefinition
-  xmlns="sap.m"
+<core:FragmentDefinition xmlns="sap.m"
   xmlns:core="sap.ui.core">
- <Dialog
-    id="chatDialog"
-    class="jouleStyleDialog"
-    stretch="false"
-    contentWidth="416px"
-    contentHeight="65%"
-    draggable="true"
-showHeader="false"
-    verticalScrolling="false"
-    horizontalScrolling="false">
-   <customHeader>
-            <Bar class="chatHeaderGradient" >
-                <contentMiddle>
-                    <Button icon="sap-icon://menu2" class="whiteIconButton"></Button>
-                    <Title text="Joule" class="whiteIconButton"  />
-                </contentMiddle>
-                <contentRight>
-                     <Button
-                       
-                        icon="sap-icon://resize"
-                        tooltip="Make full screen"
-                        type="Transparent"
-                        press=".onResize"
-                        class="sapUiTinyMarginEnd whiteIconButton"
-                    />
-                    <Button tooltip="Close" press=".onCloseChatFragment" icon="sap-icon://decline" iconFirst="false" class="whiteIconButton"/>
-                </contentRight>
-            </Bar>
-        </customHeader>
+  <Dialog id="chatDialog" class="jouleStyleDialog" contentWidth="416px" contentHeight="65%" draggable="true" stretch="false" showHeader="false" verticalScrolling="false" horizontalScrolling="false">
+    <customHeader>
+      <Bar class="chatHeaderGradient">
+        <contentMiddle>
+          <Button icon="sap-icon://menu2" class="whiteIconButton"></Button>
+          <Title text="Joule" class="whiteIconButton" />
+        </contentMiddle>
+        <contentRight>
+          <Button icon="sap-icon://resize" tooltip="Make full screen" type="Transparent" press=".onResize" class="sapUiTinyMarginEnd whiteIconButton" />
+          <Button tooltip="Close" press=".onCloseChatFragment" icon="sap-icon://decline" iconFirst="false" class="whiteIconButton"/>
+        </contentRight>
+      </Bar>
+    </customHeader>
 
-    
-<ScrollContainer
-    id="chatScrollContainer"
-    vertical="true"
-    height="100%"
-    width="100%">
-      <VBox id="greetingSection" class="chatHeaderGradient"  height="62%">
 
-   
-       <VBox class="iconClass">
-                 <Image src="images/Joule icon.svg" class="sapUiLargeMarginTop " height="8rem" />
+    <ScrollContainer id="chatScrollContainer" vertical="true" height="100%" width="100%">
+      <VBox id="greetingSection" class="chatHeaderGradient" height="62%">
 
-       </VBox>
-          <VBox class="sapUiLargeMarginTop" >
+
+        <VBox class="iconClass">
+          <Image src="images/Joule icon.svg" class="sapUiLargeMarginTop " height="8rem" />
+
+        </VBox>
+        <VBox class="sapUiLargeMarginTop">
           <Text text="Hello Neha," class="chatGreetingText  " />
           <Text text="How can I help you?" class="chatTitleText " />
-          </VBox>
-          <VBox class="card sapUiTinyMarginTop" >
-           <Text text='Talk to me naturally. For example, “what are my tasks for today?”' class="chatSubText" />
-          </VBox>
+        </VBox>
+        <VBox class="card sapUiTinyMarginTop">
+          <Text text='Talk to me naturally. For example, “what are my tasks for today?”' class="chatSubText" />
+        </VBox>
 
-    </VBox>
-    <VBox width="100%" class="chatWrapperVBox">
+      </VBox>
+      <VBox width="100%" class="chatWrapperVBox">
 
-    <VBox id="compactGreeting" visible="false" class="compactGreetingVBox sapUiSmallMarginTop sapUiTinyMargin">
-    <Text text="Hi Neha👋 How can I assist you today?" class="compactGreetingText" />
-    <!-- <Text text="Select an option below or, type what you would like to do" class="sapUiTinyMarginBottom" />
- <FlexBox wrap="Wrap" 
-         justifyContent="Start"   
-         alignItems="Start"
-         class="greetingOptionsBox sapUiSmallMarginTop"
-         items="{botModel>/templates}">
-  <Button 
-    text="{botModel>text}" 
-    type="Transparent"
-    
-    class="optionButton sapUiTinyMargin sapUiTinyMarginEnd" 
-    press="onTemplateSelected" />
+        <VBox id="compactGreeting" visible="false" class="compactGreetingVBox sapUiSmallMarginTop sapUiTinyMargin">
+          <Text text="Hi Neha👋 How can I assist you today?" class="compactGreetingText" />
+          <!-- <Text text="Select an option below or, type what you would like to do" class="sapUiTinyMarginBottom" />
+ <FlexBox wrap="Wrap" justifyContent="Start" alignItems="Start" class="greetingOptionsBox sapUiSmallMarginTop" items="{botModel>/templates}">
+  <Button text="{botModel>text}" type="Transparent" class="optionButton sapUiTinyMargin sapUiTinyMarginEnd" press="onTemplateSelected" />
 </FlexBox> -->
 
 
-  </VBox>
-    <VBox id="chatContainer" width="100%" class="chatContainer"/>
-     </VBox>
-  </ScrollContainer>
+        </VBox>
+        <VBox id="chatContainer" width="100%" class="chatContainer"/>
+      </VBox>
+    </ScrollContainer>
     <footer>
-        <Toolbar class="chatInputBar">
-<Input
-  id="userInput"
-  showValueHelp="true"
-  placeholder="Type or speak something..."
-  valueHelpIconSrc="sap-icon://paper-plane"
-  width="100%"
-  submit="onSendMessage"
-/>
-        </Toolbar>
+      <Toolbar class="chatInputBar">
+        <Input id="userInput" showValueHelp="true" placeholder="Type or speak something..." valueHelpIconSrc="sap-icon://paper-plane" width="100%" submit="onSendMessage" />
+      </Toolbar>
     </footer>
-</Dialog>
+  </Dialog>
 </core:FragmentDefinition>
