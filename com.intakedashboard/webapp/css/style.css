@@ -129,13 +129,14 @@
     opacity: 0;
   }
   .compactGreetingVBox {
-    height: 30px;
-    width:300px ;
     background: rgb(232, 232, 232);
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    padding: 0 10px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    max-width: 40%;
+    
+    word-wrap: break-word;
+    color: #333;
+    font-size: 14px;
   }
   
   .compactGreetingText {
