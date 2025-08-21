@@ -367,7 +367,7 @@ sap.ui.define([
                   details: {
                     "Material": "Laptop Battery",
                     "Category": "012-Hardware",
-                    "Brand": "Dell",
+                    "Brand": "Dell        ",
                     "Laptop Model": "Inspiron 15 7000",
                     "Battery Capacity": "42 Wh"
                   }
@@ -375,7 +375,7 @@ sap.ui.define([
 
                 const oCard = new sap.m.VBox({
                   width: "100%",
-                  fitContainer: true,
+                  // fitContainer: true,
                   items: []
                 }).addStyleClass("cardStyle2 ");
 
@@ -409,10 +409,10 @@ sap.ui.define([
                   items: [
                     new sap.m.Text({
                       text: "I found a similar item listed in Ariba library. Would you like to proceed with this item?"
-                    }).addStyleClass("sapUiSmallMarginBottom"),
+                    }).addStyleClass("sapUiSmallMarginBottom  " ),
                     oCard
                   ]
-                }).addStyleClass("botMessage");
+                }).addStyleClass("botMessage sapUiTinyMarginTop");
                 oVBox.addItem(oUserBubble);
 
                 oVBox.addItem(oOuterCard);
@@ -574,6 +574,7 @@ sap.ui.define([
                                 }).addStyleClass("outerBubble");
 
                                 oVBox.addItem(oUserBubble);
+                                
                                 const sBotFollowUp = "Item has been successfully added to your request #REQ000096. What would you like to do next?";
                                 oVBox.addItem(new sap.m.VBox({
                                   justifyContent: "Start",
