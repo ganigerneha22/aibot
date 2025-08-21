@@ -1108,7 +1108,6 @@ sap.ui.define([
       const loweredMsg = message.toLowerCase();
       const oResponses = this.getView().getModel("botModel").getProperty("/responses");
 
-      // High-priority checks first
       if (loweredMsg.includes("yes,proceed")) {
         return {
           type: "itementry",
@@ -1152,7 +1151,6 @@ sap.ui.define([
         };
       }
 
-      // Now generic loop for other keys
       for (let key in oResponses) {
         if (loweredMsg.includes(key.toLowerCase())) {
           if (key === "I want to procure laptop battery") {
@@ -1174,7 +1172,6 @@ sap.ui.define([
         }
       }
 
-      // Default fallback
       return { type: "text", text: oResponses["default"] };
     },
 
@@ -1184,7 +1181,7 @@ sap.ui.define([
       const oScrollContainer = this.byId("chatScrollContainer");
       if (oScrollContainer) {
         setTimeout(() => {
-          oScrollContainer.scrollTo(0, 10000, 500); // scroll to bottom smoothly
+          oScrollContainer.scrollTo(0, 10000, 500); 
         }, 100);
       }
     },
@@ -1192,7 +1189,6 @@ sap.ui.define([
       const oChatContainer = this.byId("chatContainer");
       const oInput = this.byId("userInput");
 
-      //clear the data
       if (oChatContainer) {
         oChatContainer.removeAllItems();
       }
