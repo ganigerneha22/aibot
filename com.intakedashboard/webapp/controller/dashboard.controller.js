@@ -182,7 +182,6 @@ sap.ui.define([
         console.warn("Greeting elements not found.");
       }
     },
-
     onSendMessage: function (oEvent) {
       const sMessage = oEvent.getParameter("value");
       if (!sMessage) return;
@@ -199,13 +198,50 @@ sap.ui.define([
       this._addUserMessage(sMessage);
       this.byId("userInput").setValue("");
 
+      const oVBox = this.byId("chatContainer");
+      const oBusyIndicator = new sap.m.BusyIndicator({ size: "1rem" });
+      oVBox.addItem(oBusyIndicator);
+      this._scrollToBottom();
+
       setTimeout(() => {
         const oResponse = this._getBotResponse(sMessage);
-        this._addBotMessage(oResponse);
-      }, 600);
 
-      this._scrollToBottom();
+        const idx = oVBox.indexOfItem(oBusyIndicator);
+        if (idx > -1) {
+          oVBox.removeItem(oBusyIndicator);
+          oBusyIndicator.destroy();
+        }
+
+
+        this._addBotMessage(oResponse);
+        this._scrollToBottom();
+      }, 1200);
     },
+
+
+    // onSendMessage: function (oEvent) {
+    //   const sMessage = oEvent.getParameter("value");
+    //   if (!sMessage) return;
+
+    //   const oView = this.getView();
+    //   const oGreetingSection = oView.byId("greetingSection");
+    //   const oCompactGreeting = oView.byId("chatContainer");
+
+    //   if (oGreetingSection && oGreetingSection.getVisible()) {
+    //     oGreetingSection.setVisible(false);
+    //     oCompactGreeting.setVisible(true);
+    //   }
+
+    //   this._addUserMessage(sMessage);
+    //   this.byId("userInput").setValue("");
+
+    //   setTimeout(() => {
+    //     const oResponse = this._getBotResponse(sMessage);
+    //     this._addBotMessage(oResponse);
+    //   }, 600);
+
+    //   this._scrollToBottom();
+    // },
 
     _addBotMessage: function (response) {
       const oChatContainer = this.byId("chatContainer");
@@ -303,8 +339,302 @@ sap.ui.define([
         oVBox.addItem(oCard);
       }
 
-      if (response.type === "materialitementry") {
-        const oCard = new sap.m.VBox({
+     
+      if (response.type === "createRequest") {
+        console.log("create req");
+
+        const oButtonRow = new sap.m.HBox({
+          items: [
+            new sap.m.Button({
+              text: "Yes, Create Request",
+              type: "Default",
+              press: function () {
+                const oUserBubble = new sap.m.HBox({
+                  justifyContent: "End", // right side
+                  width: "100%",
+                  items: [
+                    new sap.m.VBox({
+                      items: [
+                        new sap.m.Text({ text: "Yes, Create Request" })
+                          .addStyleClass("userMessage")
+                      ]
+                    }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginEnd")
+                  ]
+                });
+
+                const cardResponse = {
+                  type: "card",
+                  details: {
+                    "Material": "Laptop Battery",
+                    "Category": "012-Hardware",
+                    "Brand": "Dell",
+                    "Laptop Model": "Inspiron 15 7000",
+                    "Battery Capacity": "42 Wh"
+                  }
+                };
+
+                const oCard = new sap.m.VBox({
+                  width: "100%",
+                  fitContainer: true,
+                  items: []
+                }).addStyleClass("cardStyle2 ");
+
+                const aDetailKeys = Object.keys(cardResponse.details);
+                for (let i = 0; i < aDetailKeys.length; i += 2) {
+                  oCard.addItem(new sap.m.HBox({
+                    justifyContent: "Start",
+                    wrap: sap.m.FlexWrap.Wrap,
+                    items: [
+                      new sap.m.VBox({
+                        items: [
+                          new sap.m.Label({ text: aDetailKeys[i] + ":" }).addStyleClass("detailLabel"),
+                          new sap.m.Text({ text: cardResponse.details[aDetailKeys[i]] })
+                        ]
+                      }).addStyleClass("sapUiSmallMarginEnd")
+                        .setLayoutData(new sap.m.FlexItemData({ growFactor: 1 })),
+
+                      (aDetailKeys[i + 1] ? new sap.m.VBox({
+                        items: [
+                          new sap.m.Label({ text: aDetailKeys[i + 1] + ":" }).addStyleClass("detailLabel"),
+                          new sap.m.Text({ text: cardResponse.details[aDetailKeys[i + 1]] })
+                        ]
+                      }).setLayoutData(new sap.m.FlexItemData({ growFactor: 1 }))
+                        : new sap.m.VBox())
+                    ]
+                  }).addStyleClass("sapUiSmallMarginBottom "));
+                }
+
+                const oOuterCard = new sap.m.VBox({
+                  width: "100%",
+                  items: [
+                    new sap.m.Text({
+                      text: "I found a similar item listed in Ariba library. Would you like to proceed with this item?"
+                    }).addStyleClass("sapUiSmallMarginBottom"),
+                    oCard
+                  ]
+                }).addStyleClass("botMessage");
+                oVBox.addItem(oUserBubble);
+
+                oVBox.addItem(oOuterCard);
+
+                const oActionButtons = new sap.m.HBox({
+                  justifyContent: "Start",
+                  items: [
+                    new sap.m.Button({
+                      text: "Yes, Proceed",
+                      type: "Default",
+                      press: function () {
+
+                        const oUserBubble = new sap.m.HBox({
+                          justifyContent: "End",
+                          width: "100%",
+                          items: [
+                            new sap.m.VBox({
+                              items: [
+                                new sap.m.Text({ text: "Yes, Proceed" })
+                                  .addStyleClass("userMessage")
+                              ]
+                            }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginEnd")
+                          ]
+                        });
+
+                        const oCard = new sap.m.VBox({
+                          width: "90%",
+                          height: "50%",
+                          items: []
+                        }).addStyleClass("sapUiSmallMargin cardStyle");
+
+                        const aFields = [
+                          {
+                            label: "Quantity:",
+                            control: new sap.m.Input({
+                              value: "1",
+                              type: "Number",
+                              width: "150px"
+                            })
+                          },
+                          {
+                            label: "UOM:",
+                            control: new sap.m.Input({
+                              showValueHelp: true,
+                              value: "EA-Each",
+                              valueHelpRequest: function () {
+                                sap.m.MessageToast.show("Open UOM Value Help");
+                              },
+                              width: "150px"
+                            })
+                          },
+                          {
+                            label: "Estimated Unit Price:",
+                            control: new sap.m.Input({
+                              value: "0.00",
+                              type: "Number",
+                              width: "150px"
+                            })
+                          },
+                          {
+                            label: "Currency:",
+                            control: new sap.m.Input({
+                              showValueHelp: true,
+                              value: "USD",
+                              valueHelpRequest: function () {
+                                sap.m.MessageToast.show("Open Currency Value Help");
+                              },
+                              width: "150px"
+                            })
+                          }
+                        ];
+
+                        for (let i = 0; i < aFields.length; i += 2) {
+                          oCard.addItem(new sap.m.HBox({
+                            justifyContent: "SpaceBetween",
+                            items: [
+                              new sap.m.VBox({
+                                items: [
+                                  new sap.m.Label({ text: aFields[i].label }),
+                                  aFields[i].control
+                                ]
+                              }),
+                              new sap.m.VBox({
+                                items: [
+                                  new sap.m.Label({ text: aFields[i + 1].label }),
+                                  aFields[i + 1].control
+                                ]
+                              })
+                            ]
+                          }).addStyleClass("sapUiSmallMarginBottom"));
+                        }
+
+                        // Footer bar inside the card
+                        const oFooterBar = new sap.m.Toolbar({
+                          content: [
+                            new sap.m.ToolbarSpacer(),
+                            new sap.m.Button({
+                              text: "Cancel",
+                              type: "Transparent",
+                              press: function () {
+                                oCard.destroy();
+                              }
+                            }),
+                            new sap.m.Button({
+                              text: "OK",
+                              type: "Emphasized",
+                              press: function () {
+                                const sQuantity = parseFloat(aFields[0].control.getValue()) || 0;
+                                const sUOM = aFields[1].control.getValue();
+                                const sPrice = parseFloat(aFields[2].control.getValue()) || 0;
+                                const sCurrency = aFields[3].control.getValue();
+
+                                const sTotal = (sQuantity * sPrice).toFixed(2);
+
+                                oCard.destroy();
+
+                                const oUserCard = new sap.m.VBox({
+                                  width: "90%",
+                                  items: []
+                                }).addStyleClass("sapUiSmallMargin whiteCard");
+
+                                const aPairs = [
+                                  { label: "Quantity:", value: sQuantity },
+                                  { label: "UOM:", value: sUOM },
+                                  { label: "Estimated Unit Price:", value: sPrice },
+                                  { label: "Currency:", value: sCurrency },
+                                  { label: "Total", value: sTotal }
+                                ];
+
+                                for (let i = 0; i < aPairs.length; i += 2) {
+                                  oUserCard.addItem(new sap.m.HBox({
+                                    justifyContent: "SpaceBetween",
+                                    wrap: sap.m.FlexWrap.Wrap,
+                                    items: [
+                                      new sap.m.VBox({
+                                        items: [
+                                          new sap.m.Label({ text: aPairs[i].label }).addStyleClass("detailLabel"),
+                                          new sap.m.Text({ text: aPairs[i].value })
+                                        ]
+                                      }).addStyleClass("sapUiSmallMarginEnd"),
+                                      (aPairs[i + 1] ? new sap.m.VBox({
+                                        items: [
+                                          new sap.m.Label({ text: aPairs[i + 1].label }).addStyleClass("detailLabel"),
+                                          new sap.m.Text({ text: aPairs[i + 1].value })
+                                        ]
+                                      }) : new sap.m.VBox())
+                                    ]
+                                  }).addStyleClass("sapUiSmallMarginBottom"));
+                                }
+
+                                const oUserBubble = new sap.m.HBox({
+                                  justifyContent: "End",
+                                  width: "100%",
+                                  items: [
+                                    new sap.m.VBox({
+                                      items: [oUserCard]
+                                    }).addStyleClass("purpleBubble")
+                                  ]
+                                }).addStyleClass("outerBubble");
+
+                                oVBox.addItem(oUserBubble);
+                                const sBotFollowUp = "Item has been successfully added to your request #REQ000096. What would you like to do next?";
+                                oVBox.addItem(new sap.m.VBox({
+                                  justifyContent: "Start",
+                                  items: [
+                                    new sap.m.VBox({
+                                      items: [new sap.m.Text({ text: sBotFollowUp })]
+                                    }).addStyleClass("sapUiSmallMarginTop botMessage"),
+                                    new sap.m.HBox({
+                                      justifyContent: "Start",
+                                      items: [
+                                        new sap.m.Button({
+                                          text: "Add Another Item",
+                                          type: "Default",
+                                          press: function () {
+                                            const oCard = new sap.m.VBox({
+                                              width: "100%",
+                                              items: []
+                                            }).addStyleClass("sapUiSmallMarginTop cardStyle");
+
+
+                                            oCard.addItem(new sap.m.Label({
+                                              text: "Select Material",
+                                              design: "Bold"
+                                            }).addStyleClass("sapUiSmallMarginBottom"));
+
+                                            const oTable = new sap.m.Table({
+                                              fixedLayout: false,
+                                              columns: [
+                                                new sap.m.Column({ header: new sap.m.Label({ text: "Material ID" }) }),
+                                                new sap.m.Column({ header: new sap.m.Label({ text: "Product" }) }),
+                                              ],
+                                              items: {
+                                                path: "botModel>/materials",
+                                                template: new sap.m.ColumnListItem({
+                                                  type: "Active", // 👈 makes row clickable
+                                                  cells: [
+                                                    new sap.m.Text({ text: "{botModel>MaterialID}" }),
+                                                    new sap.m.Text({ text: "{botModel>Product}" }),
+                                                  ],
+                                                  press: function (oEvent) {
+                                                    const oCtx = oEvent.getSource().getBindingContext("botModel");
+                                                    const sMaterialID = oCtx.getProperty("MaterialID");
+                                                    const sProduct = oCtx.getProperty("Product");
+
+                                                    const oUserBubble = new sap.m.HBox({
+                                                      justifyContent: "End",
+                                                      width: "100%",
+                                                      items: [
+                                                        new sap.m.VBox({
+                                                          items: [
+                                                            new sap.m.Text({
+                                                              text: `${sProduct}`
+                                                            }).addStyleClass("userMessage")
+                                                          ]
+                                                        }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginEnd")
+                                                      ]
+                                                    });
+
+                                                    oVBox.addItem(oUserBubble);
+
+                      const oCard = new sap.m.VBox({
           width: "90%",
           height: "50%",
           items: []
@@ -646,310 +976,6 @@ sap.ui.define([
         oCard.addItem(oFooterBar);
 
         oVBox.addItem(oCard);
-      }
-      if (response.type === "createRequest") {
-        console.log("create req");
-
-        const oButtonRow = new sap.m.HBox({
-          items: [
-            new sap.m.Button({
-              text: "Yes, Create Request",
-              type: "Default",
-              press: function () {
-                const oUserBubble = new sap.m.HBox({
-                  justifyContent: "End", // right side
-                  width: "100%",
-                  items: [
-                    new sap.m.VBox({
-                      items: [
-                        new sap.m.Text({ text: "Yes, Create Request" })
-                          .addStyleClass("userMessage")
-                      ]
-                    }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginEnd")
-                  ]
-                });
-                const cardResponse = {
-                  type: "card",
-                  details: {
-                    "Material": "Laptop Battery",
-                    "Category": "012-Hardware",
-                    "Brand": "Dell",
-                    "Laptop Model": "Inspiron 15 7000",
-                    "Battery Capacity": "42 Wh"
-                  }
-                };
-
-                const oCard = new sap.m.VBox({
-                  width: "100%",
-                  fitContainer: true,
-                  items: []
-                }).addStyleClass("cardStyle2 ");
-
-                const aDetailKeys = Object.keys(cardResponse.details);
-                for (let i = 0; i < aDetailKeys.length; i += 2) {
-                  oCard.addItem(new sap.m.HBox({
-                    justifyContent: "Start",
-                    wrap: sap.m.FlexWrap.Wrap,
-                    items: [
-                      new sap.m.VBox({
-                        items: [
-                          new sap.m.Label({ text: aDetailKeys[i] + ":" }).addStyleClass("detailLabel"),
-                          new sap.m.Text({ text: cardResponse.details[aDetailKeys[i]] })
-                        ]
-                      }).addStyleClass("sapUiSmallMarginEnd")
-                        .setLayoutData(new sap.m.FlexItemData({ growFactor: 1 })),
-
-                      (aDetailKeys[i + 1] ? new sap.m.VBox({
-                        items: [
-                          new sap.m.Label({ text: aDetailKeys[i + 1] + ":" }).addStyleClass("detailLabel"),
-                          new sap.m.Text({ text: cardResponse.details[aDetailKeys[i + 1]] })
-                        ]
-                      }).setLayoutData(new sap.m.FlexItemData({ growFactor: 1 }))
-                        : new sap.m.VBox())
-                    ]
-                  }).addStyleClass("sapUiSmallMarginBottom "));
-                }
-
-                const oOuterCard = new sap.m.VBox({
-                  width: "100%",
-                  items: [
-                    new sap.m.Text({
-                      text: "I found a similar item listed in Ariba library. Would you like to proceed with this item?"
-                    }).addStyleClass("sapUiSmallMarginBottom"),
-                    oCard
-                  ]
-                }).addStyleClass("botMessage");
-                oVBox.addItem(oUserBubble);
-
-                oVBox.addItem(oOuterCard);
-
-                const oActionButtons = new sap.m.HBox({
-                  justifyContent: "Start",
-                  items: [
-                    new sap.m.Button({
-                      text: "Yes, Proceed",
-                      type: "Default",
-                      press: function () {
-
-                        const oUserBubble = new sap.m.HBox({
-                          justifyContent: "End",
-                          width: "100%",
-                          items: [
-                            new sap.m.VBox({
-                              items: [
-                                new sap.m.Text({ text: "Yes, Proceed" })
-                                  .addStyleClass("userMessage")
-                              ]
-                            }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginEnd")
-                          ]
-                        });
-
-                        const oCard = new sap.m.VBox({
-                          width: "90%",
-                          height: "50%",
-                          items: []
-                        }).addStyleClass("sapUiSmallMargin cardStyle");
-
-                        const aFields = [
-                          {
-                            label: "Quantity:",
-                            control: new sap.m.Input({
-                              value: "1",
-                              type: "Number",
-                              width: "150px"
-                            })
-                          },
-                          {
-                            label: "UOM:",
-                            control: new sap.m.Input({
-                              showValueHelp: true,
-                              value: "EA-Each",
-                              valueHelpRequest: function () {
-                                sap.m.MessageToast.show("Open UOM Value Help");
-                              },
-                              width: "150px"
-                            })
-                          },
-                          {
-                            label: "Estimated Unit Price:",
-                            control: new sap.m.Input({
-                              value: "0.00",
-                              type: "Number",
-                              width: "150px"
-                            })
-                          },
-                          {
-                            label: "Currency:",
-                            control: new sap.m.Input({
-                              showValueHelp: true,
-                              value: "USD",
-                              valueHelpRequest: function () {
-                                sap.m.MessageToast.show("Open Currency Value Help");
-                              },
-                              width: "150px"
-                            })
-                          }
-                        ];
-
-                        for (let i = 0; i < aFields.length; i += 2) {
-                          oCard.addItem(new sap.m.HBox({
-                            justifyContent: "SpaceBetween",
-                            items: [
-                              new sap.m.VBox({
-                                items: [
-                                  new sap.m.Label({ text: aFields[i].label }),
-                                  aFields[i].control
-                                ]
-                              }),
-                              new sap.m.VBox({
-                                items: [
-                                  new sap.m.Label({ text: aFields[i + 1].label }),
-                                  aFields[i + 1].control
-                                ]
-                              })
-                            ]
-                          }).addStyleClass("sapUiSmallMarginBottom"));
-                        }
-
-                        // Footer bar inside the card
-                        const oFooterBar = new sap.m.Toolbar({
-                          content: [
-                            new sap.m.ToolbarSpacer(),
-                            new sap.m.Button({
-                              text: "Cancel",
-                              type: "Transparent",
-                              press: function () {
-                                oCard.destroy();
-                              }
-                            }),
-                            new sap.m.Button({
-                              text: "OK",
-                              type: "Emphasized",
-                              press: function () {
-                                const sQuantity = parseFloat(aFields[0].control.getValue()) || 0;
-                                const sUOM = aFields[1].control.getValue();
-                                const sPrice = parseFloat(aFields[2].control.getValue()) || 0;
-                                const sCurrency = aFields[3].control.getValue();
-
-                                const sTotal = (sQuantity * sPrice).toFixed(2);
-
-                                oCard.destroy();
-
-                                const oUserCard = new sap.m.VBox({
-                                  width: "90%",
-                                  items: []
-                                }).addStyleClass("sapUiSmallMargin whiteCard");
-
-                                const aPairs = [
-                                  { label: "Quantity:", value: sQuantity },
-                                  { label: "UOM:", value: sUOM },
-                                  { label: "Estimated Unit Price:", value: sPrice },
-                                  { label: "Currency:", value: sCurrency },
-                                  { label: "Total", value: sTotal }
-                                ];
-
-                                for (let i = 0; i < aPairs.length; i += 2) {
-                                  oUserCard.addItem(new sap.m.HBox({
-                                    justifyContent: "SpaceBetween",
-                                    wrap: sap.m.FlexWrap.Wrap,
-                                    items: [
-                                      new sap.m.VBox({
-                                        items: [
-                                          new sap.m.Label({ text: aPairs[i].label }).addStyleClass("detailLabel"),
-                                          new sap.m.Text({ text: aPairs[i].value })
-                                        ]
-                                      }).addStyleClass("sapUiSmallMarginEnd"),
-                                      (aPairs[i + 1] ? new sap.m.VBox({
-                                        items: [
-                                          new sap.m.Label({ text: aPairs[i + 1].label }).addStyleClass("detailLabel"),
-                                          new sap.m.Text({ text: aPairs[i + 1].value })
-                                        ]
-                                      }) : new sap.m.VBox())
-                                    ]
-                                  }).addStyleClass("sapUiSmallMarginBottom"));
-                                }
-
-                                const oUserBubble = new sap.m.HBox({
-                                  justifyContent: "End",
-                                  width: "100%",
-                                  items: [
-                                    new sap.m.VBox({
-                                      items: [oUserCard]
-                                    }).addStyleClass("purpleBubble")
-                                  ]
-                                }).addStyleClass("outerBubble");
-
-                                oVBox.addItem(oUserBubble);
-                                const sBotFollowUp = "Item has been successfully added to your request #REQ000096. What would you like to do next?";
-                                oVBox.addItem(new sap.m.VBox({
-                                  justifyContent: "Start",
-                                  items: [
-                                    new sap.m.VBox({
-                                      items: [new sap.m.Text({ text: sBotFollowUp })]
-                                    }).addStyleClass("sapUiSmallMarginTop botMessage"),
-                                    new sap.m.HBox({
-                                      justifyContent: "Start",
-                                      items: [
-                                        new sap.m.Button({
-                                          text: "Add Another Item",
-                                          type: "Default",
-                                          press: function () {
-                                            const oCard = new sap.m.VBox({
-                                              width: "100%",
-                                              items: []
-                                            }).addStyleClass("sapUiSmallMarginTop cardStyle");
-
-
-                                            oCard.addItem(new sap.m.Label({
-                                              text: "Select Material",
-                                              design: "Bold"
-                                            }).addStyleClass("sapUiSmallMarginBottom"));
-
-                                            const oTable = new sap.m.Table({
-                                              fixedLayout: false,
-                                              columns: [
-                                                new sap.m.Column({ header: new sap.m.Label({ text: "Material ID" }) }),
-                                                new sap.m.Column({ header: new sap.m.Label({ text: "Product" }) }),
-                                              ],
-                                              items: {
-                                                path: "botModel>/materials",
-                                                template: new sap.m.ColumnListItem({
-                                                  type: "Active", // 👈 makes row clickable
-                                                  cells: [
-                                                    new sap.m.Text({ text: "{botModel>MaterialID}" }),
-                                                    new sap.m.Text({ text: "{botModel>Product}" }),
-                                                  ],
-                                                  press: function (oEvent) {
-                                                    const oCtx = oEvent.getSource().getBindingContext("botModel");
-                                                    const sMaterialID = oCtx.getProperty("MaterialID");
-                                                    const sProduct = oCtx.getProperty("Product");
-
-                                                    const oUserBubble = new sap.m.HBox({
-                                                      justifyContent: "End",
-                                                      width: "100%",
-                                                      items: [
-                                                        new sap.m.VBox({
-                                                          items: [
-                                                            new sap.m.Text({
-                                                              text: `${sProduct}`
-                                                            }).addStyleClass("userMessage")
-                                                          ]
-                                                        }).addStyleClass("sapUiTinyMarginTop sapUiTinyMarginEnd")
-                                                      ]
-                                                    });
-
-                                                    oVBox.addItem(oUserBubble);
-
-                                                    const oBotResponse = new sap.m.VBox({
-                                                      width: "100%",
-                                                      items: [
-                                                        new sap.m.Text({
-                                                          text: `You selected *${sProduct}* (Material ID: ${sMaterialID}). Please confirm quantity and details.`
-                                                        }).addStyleClass("botMessage sapUiSmallMarginTop")
-                                                      ]
-                                                    });
-
-                                                    oVBox.addItem(oBotResponse);
                                                   }
                                                 })
                                               }
@@ -1085,6 +1111,7 @@ sap.ui.define([
       }, 100);
     },
 
+   
 
     _addUserMessage: function (text) {
       const oChatContainer = this.byId("chatContainer");
@@ -1181,7 +1208,7 @@ sap.ui.define([
       const oScrollContainer = this.byId("chatScrollContainer");
       if (oScrollContainer) {
         setTimeout(() => {
-          oScrollContainer.scrollTo(0, 10000, 500); 
+          oScrollContainer.scrollTo(0, 10000, 500);
         }, 100);
       }
     },

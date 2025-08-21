@@ -2,43 +2,8 @@
     xmlns:core="sap.ui.core">
     <VBox class="wlTable">
         <!--  Title  -->
-        <Title text="Worklist (01)" level="H5" class="sapUiTinyMarginBottom workListStyle"/>
-        <HBox class="dividerLine sapUiResponsiveMargin"/>
-        <!--  Table  -->
-        <Table id="worklistTable" inset="false" items="{/worklist}" backgroundDesign="Transparent" class="sapUiResponsiveMargin">
-            <columns>
-                <Column>
-                    <Text text="Request ID"/>
-                </Column>
-                <Column>
-                    <Text text="Request Title"/>
-                </Column>
-                <Column>
-                    <Text text="Requested Date"/>
-                </Column>
-                <Column>
-                    <Text text="Status"/>
-                </Column>
-                <Column>
-                    <Text text="Action"/>
-                </Column>
-            </columns>
-            <items>
-                <ColumnListItem>
-                    <cells>
-                        <Link text="{requestId}" press="onPressRequestId"/>
-                        <Text text="{title}" class="reqTextStyle"/>
-                        <Text text="{date}" class="reqTextStyle"/>
-                        <ObjectStatus text="{status}" state="{= ${status} === 'Completed' ? 'Success' : ${status} === 'In Progress' ? 'Warning' : 'None'}" icon="{= ${status} === 'Completed' ? 'sap-icon://status-completed' : ${status} === 'In Progress' ? 'sap-icon://time-entry-request' : 'sap-icon://edit'}"/>
-                        <Link text="View Details" press="onPressViewDetails"/>
-                    </cells>
-                </ColumnListItem>
-            </items>
-        </Table>
-        <!--  Footer  -->
-        <HBox justifyContent="End" alignItems="Center" class="sapUiTinyMarginTop">
-            <Text text="Showing 1 out of 1"/>
-            <Button text="View All" type="Transparent" icon="sap-icon://navigation-right-arrow" iconFirst="true" class="sapUiTinyMarginBegin"/>
-        </HBox>
+        <Title text="Your Requests" level="H5" class="sapUiTinyMarginBottom workListStyle"/>
+      
+
     </VBox>
 </core:FragmentDefinition>
